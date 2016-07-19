@@ -253,7 +253,18 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+
+  ;; jj to switch to normal mode from any other mode
+  ;; the delay is important
   (setq-default evil-escape-key-sequence "jj")
+  (setq-default evil-escape-delay 0.2)
+  (defadvice cider-last-sexp (around evil activate)
+    "In normal-state or motion-state, last sexp ends at point."
+    (if (or (evil-normal-state-p) (evil-motion-state-p))
+        (save-excursion
+          (unless (or (eobp) (eolp)) (forward-char))
+          ad-do-it)
+      ad-do-it))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
