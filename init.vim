@@ -6,12 +6,18 @@ Plug 'tpope/vim-fugitive'
 
 " Async linting
 Plug 'w0rp/ale'
+"Async completion
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 "clojure plugins
 Plug 'https://github.com/guns/vim-clojure-static.git', { 'for': 'clojure' }
 Plug 'https://github.com/tpope/vim-fireplace.git', { 'for': 'clojure' }
 Plug 'https://github.com/jpalardy/vim-slime.git', { 'for': 'clojure' }
 Plug 'https://github.com/kien/rainbow_parentheses.vim.git', { 'for': 'clojure' }
+
+" elixir stuff
+Plug 'elixir-editors/vim-elixir'
+Plug 'slashmili/alchemist.vim'
 
 "jade support
 Plug 'https://github.com/digitaltoad/vim-jade.git'
@@ -21,7 +27,6 @@ Plug 'https://github.com/digitaltoad/vim-jade.git'
 " Plug 'https://github.com/Valloric/YouCompleteMe.git'
 "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plug 'https://github.com/Shutnik/jshint2.vim.git'
-
 "Scala and play 2 syntax highlighting
 Plug 'derekwyatt/vim-scala'
 Plug 'git://github.com/othree/html5.vim.git'
@@ -41,14 +46,13 @@ Plug 'ElmCast/elm-vim'
 " Plug 'gavocanov/vim-js-indent'
 
 "Utilities
-Plug 'https://github.com/scrooloose/syntastic.git'
 Plug 'https://github.com/tpope/vim-surround.git'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+" Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install' }
 
 "tcomment plugin
 Plug 'https://github.com/tomtom/tcomment_vim.git'
-nmap <C-k> gc
-imap <C-k> gc
 "Multiple Cursors
 Plug 'https://github.com/terryma/vim-multiple-cursors.git'
 
@@ -62,6 +66,7 @@ Plug 'https://github.com/zeis/vim-kolor.git'
 Plug 'https://github.com/tomasr/molokai.git'
 Plug 'https://github.com/altercation/vim-colors-solarized.git'
 Plug 'https://github.com/nathanaelkane/vim-indent-guides.git'
+Plug 'fneu/breezy'
 
 " Status line
 Plug 'itchyny/lightline.vim'
@@ -73,7 +78,7 @@ Plug 'https://github.com/Raimondi/delimitMate.git'
 
 "linters
 "Plug 'flowtype/vim-flow'
-Plug 'benekastah/neomake'
+"Plug 'benekastah/neomake'
 
 "Distraction free mode
 Plug 'https://github.com/junegunn/goyo.vim.git'
@@ -82,7 +87,8 @@ Plug 'https://github.com/junegunn/limelight.vim.git'
 call plug#end()
 filetype plugin indent on
 syntax on
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:deoplete#enable_at_startup = 1
+" set runtimepath^=~/.vim/bundle/ctrlp.vim
 set ruler
 set tabstop=4
 set shiftwidth=4
@@ -123,10 +129,6 @@ nmap <space> :
 
 imap <leader><tab> <C-x><C-o>
 " imap jj <esc>
-nnoremap <C-b> :Buffers<CR>
-nnoremap <C-g>g :Ag<CR>
-nnoremap <leader><leader> :Commands<CR>
-nnoremap <C-p> :call FzfOmniFiles()<CR>
 
 "More useful command line options
 set wildmenu
@@ -140,13 +142,51 @@ set formatoptions=qrn1
 nmap <leader>nt :NERDTreeToggle <CR>
 let NERDTreeShowHidden=1
 
-set guifont=Monaco:h14
-
 if has("autocmd")
   autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
 au BufNewFile,BufRead *.ejs set filetype=html
+
+" FZF config
+nmap <C-p> :Files<CR>
+imap <C-p> :Files<CR>
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" In Neovim, you can set up fzf window using a Vim command
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+let g:fzf_layout = { 'window': '10split enew' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " GitGutter styling to use · instead of +/-
 let g:gitgutter_sign_added = '∙'
@@ -155,12 +195,12 @@ let g:gitgutter_sign_removed = '∙'
 let g:gitgutter_sign_modified_removed = '∙'
 
 " ALE
-let g:ale_sign_warning = '▲'
-let g:ale_sign_error = '✗'
-highlight link ALEWarningSign String
-highlight link ALEErrorSign Title
-nmap ]l :ALENextWrap<CR>
-nmap [l :ALEPreviousWrap<CR>
+" let g:ale_sign_warning = '▲'
+" let g:ale_sign_error = '✗'
+" highlight link ALEWarningSign String
+" highlight link ALEErrorSign Title
+" nmap ]l :ALENextWrap<CR>
+" nmap [l :ALEPreviousWrap<CR>
 
 
 "gvim dont show menu bar
