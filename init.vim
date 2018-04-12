@@ -4,6 +4,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
+" terminal management
+Plug 'mklabs/split-term.vim'
+
 " Async linting
 Plug 'w0rp/ale'
 "Async completion
@@ -101,7 +104,6 @@ set number
 set smartindent
 set autoindent
 
-
 set linespace=3
 set wrap
 set textwidth=79
@@ -110,6 +112,12 @@ set hlsearch
 set ignorecase
 set smartcase
 set mousehide
+
+" indent settings by file type
+autocmd FileType html setlocal shiftwidth=2 tabstop=2
+autocmd FileType elixir setlocal shiftwidth=2 tabstop=2
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+tmap <C-k> :IExHide<CR>
 
 "tab options
 nmap <C-n> :tabnew<cr>
@@ -143,7 +151,7 @@ nmap <leader>nt :NERDTreeToggle <CR>
 let NERDTreeShowHidden=1
 
 if has("autocmd")
-  autocmd bufwritepost .vimrc source $MYVIMRC
+  autocmd bufwritepost init.vim source $MYVIMRC
 endif
 
 au BufNewFile,BufRead *.ejs set filetype=html
@@ -188,20 +196,23 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" GitGutter styling to use · instead of +/-
-let g:gitgutter_sign_added = '∙'
-let g:gitgutter_sign_modified = '∙'
-let g:gitgutter_sign_removed = '∙'
-let g:gitgutter_sign_modified_removed = '∙'
+" ALE config
+let g:ale_sign_warning = '▲'
+let g:ale_sign_error = '✗'
+highlight link ALEWarningSign String
+highlight link ALEErrorSign Title
+nmap ]l :ALENextWrap<CR>
+nmap [l :ALEPreviousWrap<CR>
 
-" ALE
-" let g:ale_sign_warning = '▲'
-" let g:ale_sign_error = '✗'
-" highlight link ALEWarningSign String
-" highlight link ALEErrorSign Title
-" nmap ]l :ALENextWrap<CR>
-" nmap [l :ALEPreviousWrap<CR>
-
+" deoplete tab completion
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
 
 "gvim dont show menu bar
 set guioptions-=m
