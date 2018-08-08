@@ -1,4 +1,44 @@
+set ruler
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set expandtab
+set laststatus=2
+set encoding=utf-8
+set showcmd
+set number
+set smartindent
+set autoindent
+
+set linespace=3
+set wrap
+set textwidth=80
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+set mousehide
+
+set cursorline
+" set cursorcolumn
+
+" set the title of the current file we are editing
+set title
+
+" Ale setup. Must be declared before plug initializes
+let g:ale_lint_on_save = 0
+let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_delay = 0
+let g:ale_fix_on_save = 1
+
+
 call plug#begin('~/.vim/plugged')
+
+" Ansi escape for nicer documentation
+Plug 'powerman/vim-plugin-AnsiEsc'
+
+" Editor config for vim
+Plug 'editorconfig/editorconfig-vim'
 
 " git stuff
 Plug 'airblade/vim-gitgutter'
@@ -11,6 +51,8 @@ Plug 'mklabs/split-term.vim'
 Plug 'w0rp/ale'
 "Async completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    let g:deoplete#enable_at_startup = 1
+    inoremap <expr><tab> pumvisible() ? "<c-n>" : "\<tab>"
 
 "clojure plugins
 Plug 'https://github.com/guns/vim-clojure-static.git', { 'for': 'clojure' }
@@ -27,9 +69,6 @@ Plug 'https://github.com/digitaltoad/vim-jade.git'
 
 "nerdtree Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
 "YCM
-" Plug 'https://github.com/Valloric/YouCompleteMe.git'
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-Plug 'https://github.com/Shutnik/jshint2.vim.git'
 "Scala and play 2 syntax highlighting
 Plug 'derekwyatt/vim-scala'
 Plug 'git://github.com/othree/html5.vim.git'
@@ -69,15 +108,19 @@ Plug 'https://github.com/zeis/vim-kolor.git'
 Plug 'https://github.com/tomasr/molokai.git'
 Plug 'https://github.com/altercation/vim-colors-solarized.git'
 Plug 'https://github.com/nathanaelkane/vim-indent-guides.git'
+Plug 'ayu-theme/ayu-vim'
 Plug 'fneu/breezy'
+Plug 'dim13/smyck.vim'
 
 " Status line
-Plug 'itchyny/lightline.vim'
+" Plug 'itchyny/lightline.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Plug 'powerline/powerline'
 
 
 " Auto close parens 
-Plug 'https://github.com/Raimondi/delimitMate.git'
+Plug 'jiangmiao/auto-pairs'
 
 "linters
 "Plug 'flowtype/vim-flow'
@@ -90,28 +133,9 @@ Plug 'https://github.com/junegunn/limelight.vim.git'
 call plug#end()
 filetype plugin indent on
 syntax on
-let g:deoplete#enable_at_startup = 1
+
+let mapleader =","
 " set runtimepath^=~/.vim/bundle/ctrlp.vim
-set ruler
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-set laststatus=2
-
-set showcmd
-set number
-set smartindent
-set autoindent
-
-set linespace=3
-set wrap
-set textwidth=79
-set incsearch
-set hlsearch
-set ignorecase
-set smartcase
-set mousehide
 
 " indent settings by file type
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
@@ -127,13 +151,18 @@ nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
+nmap <leader>t :Mix test<cr>
+nmap <leader>l :Mix dialyzer<cr>
+nmap <leader>1 :tabn<cr>
+nmap <leader>2 :tabp<cr>
+nmap <leader><tab> :b#<cr>
 "vimrc sorcing
 nmap <leader>ev :tabedit $MYVIMRC<CR>
 
 set bg=dark
-colorscheme gruvbox
+let ayucolor="mirage"
+colorscheme ayu
 set foldenable
-nmap <space> :
 
 imap <leader><tab> <C-x><C-o>
 " imap jj <esc>
@@ -150,9 +179,9 @@ set formatoptions=qrn1
 nmap <leader>nt :NERDTreeToggle <CR>
 let NERDTreeShowHidden=1
 
-if has("autocmd")
-  autocmd bufwritepost init.vim source $MYVIMRC
-endif
+" if has("autocmd")
+"   autocmd bufwritepost init.vim source $MYVIMRC
+" endif
 
 au BufNewFile,BufRead *.ejs set filetype=html
 
@@ -161,7 +190,7 @@ nmap <C-p> :Files<CR>
 imap <C-p> :Files<CR>
 " This is the default extra key bindings
 let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-p': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 
@@ -204,15 +233,10 @@ highlight link ALEErrorSign Title
 nmap ]l :ALENextWrap<CR>
 nmap [l :ALEPreviousWrap<CR>
 
-" deoplete tab completion
-inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort "{{{
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
+let g:ale_fixers = {
+\   'javascript': ['eslint', 'prettier'],
+\   'elixir': ['mix_format']
+\}
 
 "gvim dont show menu bar
 set guioptions-=m
