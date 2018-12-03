@@ -28,11 +28,11 @@ set title
 " Ale setup. Must be declared before plug initializes
 let g:ale_lint_on_save = 0
 let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_delay = 0
+let g:ale_lint_delay = 100
 let g:ale_fix_on_save = 1
 
 
-call plug#begin('~/.vim/plugged')
+call plug#begin()
 
 " Ansi escape for nicer documentation
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -46,6 +46,8 @@ Plug 'tpope/vim-fugitive'
 
 " terminal management
 Plug 'mklabs/split-term.vim'
+set splitright
+set splitbelow
 
 " Async linting
 Plug 'w0rp/ale'
@@ -69,6 +71,8 @@ Plug 'https://github.com/digitaltoad/vim-jade.git'
 
 "nerdtree Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
 "YCM
+"Tern js 
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 "Scala and play 2 syntax highlighting
 Plug 'derekwyatt/vim-scala'
 Plug 'git://github.com/othree/html5.vim.git'
@@ -78,14 +82,29 @@ Plug 'mattn/emmet-vim'
 " elm-lang
 Plug 'ElmCast/elm-vim'
 
+" Rust language support
+Plug 'rust-lang/rust.vim'
+au FileType rust nmap rr :VTerm cargo run<cr>
+au FileType rust nmap re :VTerm cargo check<cr>
+let g:autofmt_autosave = 1
+
+" Racer autocompletion via deoplete
+Plug 'sebastianmarkow/deoplete-rust'
+let g:deoplete#sources#rust#racer_binary='/Users/tahmid/.cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='/Users/tahmid/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src'
+
 "Javascript plugs
-" Plug 'pangloss/vim-javascript'
-" Plug 'mxw/vim-jsx'
-" Plug 'https://github.com/othree/yajs.vim.git'
-" Plug 'https://github.com/othree/javascript-libraries-syntax.vim.git'
-" Plug 'https://github.com/othree/es.next.syntax.vim.git'
-" Plug 'flowtype/vim-flow'
-" Plug 'gavocanov/vim-js-indent'
+Plug 'pangloss/vim-javascript'
+Plug 'posva/vim-vue'
+
+" flow autocompletion in vim
+Plug 'wokalski/autocomplete-flow'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+
+" rest api request chekcing in vim
+Plug 'diepm/vim-rest-console'
+
 
 "Utilities
 Plug 'https://github.com/tpope/vim-surround.git'
@@ -111,6 +130,7 @@ Plug 'https://github.com/nathanaelkane/vim-indent-guides.git'
 Plug 'ayu-theme/ayu-vim'
 Plug 'fneu/breezy'
 Plug 'dim13/smyck.vim'
+Plug 'joshdick/onedark.vim'
 
 " Status line
 " Plug 'itchyny/lightline.vim'
@@ -161,7 +181,7 @@ nmap <leader>ev :tabedit $MYVIMRC<CR>
 
 set bg=dark
 let ayucolor="mirage"
-colorscheme ayu
+colorscheme onedark
 set foldenable
 
 imap <leader><tab> <C-x><C-o>
@@ -233,9 +253,15 @@ highlight link ALEErrorSign Title
 nmap ]l :ALENextWrap<CR>
 nmap [l :ALEPreviousWrap<CR>
 
+let g:ale_linters = {
+\   'javascript': ['flow', 'eslint'],
+\   'rust': ['rls']
+\}
+
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
-\   'elixir': ['mix_format']
+\   'elixir': ['mix_format'],
+\   'rust': ['rustfmt']
 \}
 
 "gvim dont show menu bar
@@ -243,3 +269,6 @@ set guioptions-=m
 set guioptions-=T
 set guioptions-=L
 
+" Use tern_for_vim.
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
