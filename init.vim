@@ -69,7 +69,13 @@ Plug 'slashmili/alchemist.vim'
 "jade support
 Plug 'https://github.com/digitaltoad/vim-jade.git'
 
-"nerdtree Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
+" Language LSP
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+
+
 "YCM
 "Tern js 
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
@@ -86,13 +92,11 @@ Plug 'ElmCast/elm-vim'
 Plug 'rust-lang/rust.vim'
 au FileType rust nmap rr :VTerm cargo run<cr>
 au FileType rust nmap re :VTerm cargo check<cr>
+
 let g:autofmt_autosave = 1
 
 " Racer autocompletion via deoplete
 Plug 'sebastianmarkow/deoplete-rust'
-let g:deoplete#sources#rust#racer_binary='/Users/tahmid/.cargo/bin/racer'
-let g:deoplete#sources#rust#rust_source_path='/Users/tahmid/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src'
-
 "Javascript plugs
 Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue'
@@ -110,7 +114,6 @@ Plug 'diepm/vim-rest-console'
 Plug 'https://github.com/tpope/vim-surround.git'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-" Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install' }
 
 "tcomment plugin
 Plug 'https://github.com/tomtom/tcomment_vim.git'
@@ -149,6 +152,9 @@ Plug 'jiangmiao/auto-pairs'
 "Distraction free mode
 Plug 'https://github.com/junegunn/goyo.vim.git'
 Plug 'https://github.com/junegunn/limelight.vim.git'
+
+" vim-tasks plugin
+Plug '~/projects/rust/vim-tasks'
 
 call plug#end()
 filetype plugin indent on
@@ -195,9 +201,6 @@ nnoremap <leader>v <C-w>v
 
 set showmatch
 set formatoptions=qrn1
-
-nmap <leader>nt :NERDTreeToggle <CR>
-let NERDTreeShowHidden=1
 
 " if has("autocmd")
 "   autocmd bufwritepost init.vim source $MYVIMRC
@@ -260,9 +263,33 @@ let g:ale_linters = {
 
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
+\   'json': ['prettier'],
 \   'elixir': ['mix_format'],
 \   'rust': ['rustfmt']
 \}
+
+
+" rust setup rls
+"
+let g:deoplete#sources#rust#racer_binary='/Users/tahmid/.cargo/bin/racer'
+let g:deoplete#sources#rust#rust_source_path='/Users/tahmid/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src'
+
+" Required for operations modifying multiple buffers like rename.
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio']
+    \ }
+
+
+let g:LanguageClient_autoStart = 1
+
+" Maps K to hover, gd to goto definition, F2 to rename
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
 
 "gvim dont show menu bar
 set guioptions-=m
@@ -272,3 +299,4 @@ set guioptions-=L
 " Use tern_for_vim.
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
+nmap <leader>nt :Vexplore<CR>
