@@ -76,6 +76,7 @@ Plug 'autozimu/LanguageClient-neovim', {
     \ }
 
 
+"nerdtree Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
 "YCM
 "Tern js 
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
@@ -90,13 +91,13 @@ Plug 'ElmCast/elm-vim'
 
 " Rust language support
 Plug 'rust-lang/rust.vim'
-au FileType rust nmap rr :VTerm cargo run<cr>
-au FileType rust nmap re :VTerm cargo check<cr>
+" au FileType rust nmap rr :VTerm cargo run<cr>
+" au FileType rust nmap re :VTerm cargo check<cr>
+nmap re :Build()<cr>
+nmap rr :Run()<cr>
 
 let g:autofmt_autosave = 1
 
-" Racer autocompletion via deoplete
-Plug 'sebastianmarkow/deoplete-rust'
 "Javascript plugs
 Plug 'pangloss/vim-javascript'
 Plug 'posva/vim-vue'
@@ -134,6 +135,8 @@ Plug 'ayu-theme/ayu-vim'
 Plug 'fneu/breezy'
 Plug 'dim13/smyck.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'iCyMind/NeoSolarized'
+Plug 'haishanh/night-owl.vim'
 
 " Status line
 " Plug 'itchyny/lightline.vim'
@@ -185,9 +188,12 @@ nmap <leader><tab> :b#<cr>
 "vimrc sorcing
 nmap <leader>ev :tabedit $MYVIMRC<CR>
 
+if (has("termguicolors"))
+ set termguicolors
+endif
+
 set bg=dark
-let ayucolor="mirage"
-colorscheme onedark
+colorscheme night-owl
 set foldenable
 
 imap <leader><tab> <C-x><C-o>
@@ -201,12 +207,21 @@ nnoremap <leader>v <C-w>v
 
 set showmatch
 set formatoptions=qrn1
-
 " if has("autocmd")
 "   autocmd bufwritepost init.vim source $MYVIMRC
 " endif
 
 au BufNewFile,BufRead *.ejs set filetype=html
+
+" git operations hotkeys
+" aliases the terminal keys e.g. gst for git status, ga for git add etc
+nmap <leader>gst :Gstatus<CR>
+nmap <leader>gd :Gdiff<CR>
+nmap <leader>grm :Gdelete<CR>
+nmap <leader>gmv :Gmove<CR>
+nmap <leader>gco :Gread<CR>
+nmap <leader>ga :Gwrite<CR>
+nmap <leader>gc :Gcommit %<CR>
 
 " FZF config
 nmap <C-p> :Files<CR>
@@ -279,7 +294,6 @@ set hidden
 
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['javascript-typescript-stdio']
     \ }
 
 
@@ -299,4 +313,12 @@ set guioptions-=L
 " Use tern_for_vim.
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
-nmap <leader>nt :Vexplore<CR>
+"gvim dont show menu bar
+set guioptions-=m
+set guioptions-=T
+set guioptions-=L
+
+" netrw setup
+
+nmap <C-\> :Vexplore<CR>
+imap <C-\> :Vexplore<CR>
