@@ -50,11 +50,11 @@ set splitright
 set splitbelow
 
 " Async linting
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 "Async completion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    let g:deoplete#enable_at_startup = 1
-    inoremap <expr><tab> pumvisible() ? "<c-n>" : "\<tab>"
+let g:deoplete#enable_at_startup = 0
+" inoremap <expr><tab> pumvisible() ? \"<c-n>\" : \"\<tab>\"
 
 "clojure plugins
 Plug 'https://github.com/guns/vim-clojure-static.git', { 'for': 'clojure' }
@@ -69,17 +69,8 @@ Plug 'slashmili/alchemist.vim'
 "jade support
 Plug 'https://github.com/digitaltoad/vim-jade.git'
 
-" Language LSP
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
-
-
 "nerdtree Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
 "YCM
-"Tern js 
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 "Scala and play 2 syntax highlighting
 Plug 'derekwyatt/vim-scala'
 Plug 'git://github.com/othree/html5.vim.git'
@@ -100,7 +91,101 @@ let g:autofmt_autosave = 1
 
 "Javascript plugs
 Plug 'pangloss/vim-javascript'
-Plug 'posva/vim-vue'
+Plug 'mxw/vim-jsx'
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Coc configurations
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+set signcolumn=yes
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " flow autocompletion in vim
 Plug 'wokalski/autocomplete-flow'
@@ -193,7 +278,8 @@ if (has("termguicolors"))
 endif
 
 set bg=dark
-colorscheme night-owl
+" colorscheme night-owl
+colorscheme onedark
 set foldenable
 
 imap <leader><tab> <C-x><C-o>
@@ -224,6 +310,7 @@ nmap <leader>ga :Gwrite<CR>
 nmap <leader>gc :Gcommit %<CR>
 
 " FZF config
+let $FZF_DEFAULT_COMMAND = 'rg --files'
 nmap <C-p> :Files<CR>
 imap <C-p> :Files<CR>
 " This is the default extra key bindings
@@ -284,35 +371,15 @@ let g:ale_fixers = {
 \}
 
 
-" rust setup rls
-"
-let g:deoplete#sources#rust#racer_binary='/Users/tahmid/.cargo/bin/racer'
-let g:deoplete#sources#rust#rust_source_path='/Users/tahmid/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src'
-
 " Required for operations modifying multiple buffers like rename.
 set hidden
 
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ }
-
-
-let g:LanguageClient_autoStart = 1
-
 " Maps K to hover, gd to goto definition, F2 to rename
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 
-"gvim dont show menu bar
-set guioptions-=m
-set guioptions-=T
-set guioptions-=L
-
-" Use tern_for_vim.
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
 "gvim dont show menu bar
 set guioptions-=m
 set guioptions-=T
