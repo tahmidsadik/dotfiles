@@ -26,7 +26,7 @@ zplug "plugins/git", from:oh-my-zsh
 # zplug "plugins/vagrant", from:oh-my-zsh
 
 setopt prompt_subst
-zplug "caiogondim/bullet-train.zsh", as:theme
+zplug romkatv/powerlevel10k, use:powerlevel10k.zsh-theme
 
 # Case insenstive completion
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -44,6 +44,7 @@ alias install='yaourt -S'
 alias search='yaourt -Ss'
 alias refont='fc-cache -f -v'
 alias studio='/opt/android-studio/bin/studio.sh'
+alias cat='bat'
 
 
 # Install plugins if there are plugins that have not been installed
@@ -53,5 +54,13 @@ if ! zplug check --verbose; then
         echo; zplug install
     fi
 fi
-
 zplug load --verbose
+
+# fnm
+eval "$(fnm env --multi)"
+export PATH=$PATH:/usr/local/opt/mysql@5.7/bin
+
+export HOST_IP=`eval ifconfig | grep -Eo 'inet (addr:)?([0-9]*\\.){3}[0-9]*' | grep -Eo '([0-9]*\\.){3}[0-9]*' | grep -v '127.0.0.1' | head -n 1`
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
