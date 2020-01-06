@@ -51,10 +51,9 @@ set splitbelow
 
 " Async linting
 Plug 'dense-analysis/ale'
-"Async completion
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-let g:deoplete#enable_at_startup = 0
-" inoremap <expr><tab> pumvisible() ? \"<c-n>\" : \"\<tab>\"
+
+" yank highlighting
+Plug 'machakann/vim-highlightedyank'
 
 "clojure plugins
 Plug 'https://github.com/guns/vim-clojure-static.git', { 'for': 'clojure' }
@@ -69,6 +68,9 @@ Plug 'slashmili/alchemist.vim'
 "jade support
 Plug 'https://github.com/digitaltoad/vim-jade.git'
 
+" Golang support 
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 "nerdtree Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
 "YCM
 "Scala and play 2 syntax highlighting
@@ -82,16 +84,21 @@ Plug 'ElmCast/elm-vim'
 
 " Rust language support
 Plug 'rust-lang/rust.vim'
-" au FileType rust nmap rr :VTerm cargo run<cr>
-" au FileType rust nmap re :VTerm cargo check<cr>
-nmap re :Build()<cr>
-nmap rr :Run()<cr>
+au FileType rust nmap rr :VTerm cargo run<cr>
+au FileType rust nmap re :VTerm cargo check<cr>
 
+au FileType javascript nmap rr :VTerm yarn start<cr>
+" nmap re :Build()<cr>
+" nmap rr :Run()<cr>
+
+" toml syntax highlighting
+Plug 'cespare/vim-toml'
 let g:autofmt_autosave = 1
 
 "Javascript plugs
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'evanleck/vim-svelte'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -201,6 +208,10 @@ Plug 'https://github.com/tpope/vim-surround.git'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
+" vim clap
+Plug 'liuchengxu/vim-clap'
+Plug 'liuchengxu/vim-clap', { 'do': function('clap#helper#build_all') }
+
 "tcomment plugin
 Plug 'https://github.com/tomtom/tcomment_vim.git'
 "Multiple Cursors
@@ -222,11 +233,15 @@ Plug 'dim13/smyck.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'iCyMind/NeoSolarized'
 Plug 'haishanh/night-owl.vim'
+Plug 'chriskempson/base16-vim'
 
 " Status line
 " Plug 'itchyny/lightline.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+let g:airline_powerline_fonts = 1
+let g:airline_theme='base16_atelierdune'
+
 " Plug 'powerline/powerline'
 
 
@@ -277,9 +292,10 @@ if (has("termguicolors"))
  set termguicolors
 endif
 
-set bg=dark
 " colorscheme night-owl
-colorscheme onedark
+" colorscheme breezy
+colorscheme base16-atelier-dune
+set bg=dark
 set foldenable
 
 imap <leader><tab> <C-x><C-o>
@@ -309,10 +325,14 @@ nmap <leader>gco :Gread<CR>
 nmap <leader>ga :Gwrite<CR>
 nmap <leader>gc :Gcommit %<CR>
 
+" Vim Clap keybinding
+nmap <C-p> :Clap files<CR>
+imap <C-p> :Clap files<CR>
+
 " FZF config
 let $FZF_DEFAULT_COMMAND = 'rg --files'
-nmap <C-p> :Files<CR>
-imap <C-p> :Files<CR>
+" nmap <C-p> :Files<CR>
+" imap <C-p> :Files<CR>
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-p': 'tab split',
@@ -360,14 +380,17 @@ nmap [l :ALEPreviousWrap<CR>
 
 let g:ale_linters = {
 \   'javascript': ['flow', 'eslint'],
+\   'typescript': ['eslint', 'tsserver'],
 \   'rust': ['rls']
 \}
 
 let g:ale_fixers = {
 \   'javascript': ['eslint', 'prettier'],
+\   'typescript': ['eslint', 'prettier'],
 \   'json': ['prettier'],
 \   'elixir': ['mix_format'],
-\   'rust': ['rustfmt']
+\   'rust': ['rustfmt'],
+\   'golang': ['gofmt']
 \}
 
 
