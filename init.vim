@@ -71,8 +71,8 @@ Plug 'https://github.com/digitaltoad/vim-jade.git'
 " Golang support 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
-"nerdtree Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
-"YCM
+"nerdtree 
+Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
 "Scala and play 2 syntax highlighting
 Plug 'derekwyatt/vim-scala'
 Plug 'git://github.com/othree/html5.vim.git'
@@ -103,6 +103,7 @@ Plug 'evanleck/vim-svelte'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Coc configurations
+" start
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
@@ -194,14 +195,12 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-" flow autocompletion in vim
-Plug 'wokalski/autocomplete-flow'
+" neosnippet support
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 
 " rest api request chekcing in vim
 Plug 'diepm/vim-rest-console'
-
 
 "Utilities
 Plug 'https://github.com/tpope/vim-surround.git'
@@ -209,8 +208,8 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 " vim clap
-Plug 'liuchengxu/vim-clap'
-Plug 'liuchengxu/vim-clap', { 'do': function('clap#helper#build_all') }
+" Plug 'liuchengxu/vim-clap'
+" Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
 
 "tcomment plugin
 Plug 'https://github.com/tomtom/tcomment_vim.git'
@@ -326,13 +325,13 @@ nmap <leader>ga :Gwrite<CR>
 nmap <leader>gc :Gcommit %<CR>
 
 " Vim Clap keybinding
-nmap <C-p> :Clap files<CR>
-imap <C-p> :Clap files<CR>
+" nmap <C-p> :Clap files<CR>
+" imap <C-p> :Clap files<CR>
 
 " FZF config
 let $FZF_DEFAULT_COMMAND = 'rg --files'
-" nmap <C-p> :Files<CR>
-" imap <C-p> :Files<CR>
+nmap <C-p> :Files<CR>
+imap <C-p> :Files<CR>
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-p': 'tab split',
@@ -381,7 +380,8 @@ nmap [l :ALEPreviousWrap<CR>
 let g:ale_linters = {
 \   'javascript': ['flow', 'eslint'],
 \   'typescript': ['eslint', 'tsserver'],
-\   'rust': ['rls']
+\   'rust': ['rls'],
+\   'golang': ['gofmt']
 \}
 
 let g:ale_fixers = {
@@ -410,5 +410,11 @@ set guioptions-=L
 
 " netrw setup
 
-nmap <C-\> :Vexplore<CR>
-imap <C-\> :Vexplore<CR>
+" nmap <C-\> :Vexplore<CR>
+" imap <C-\> :Vexplore<CR>
+
+nmap <C-\> :NERDTreeToggle<CR>
+imap <C-\> :NERDTreeToggle<CR>
+
+
+
