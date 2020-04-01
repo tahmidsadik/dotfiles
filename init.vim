@@ -61,26 +61,12 @@ Plug 'https://github.com/tpope/vim-fireplace.git', { 'for': 'clojure' }
 Plug 'https://github.com/jpalardy/vim-slime.git', { 'for': 'clojure' }
 Plug 'https://github.com/kien/rainbow_parentheses.vim.git', { 'for': 'clojure' }
 
-" elixir stuff
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
-
-"jade support
-Plug 'https://github.com/digitaltoad/vim-jade.git'
-
 " Golang support 
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 "nerdtree 
 Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
-"Scala and play 2 syntax highlighting
-Plug 'derekwyatt/vim-scala'
-Plug 'git://github.com/othree/html5.vim.git'
-Plug 'https://github.com/gre/play2vim.git'
 Plug 'mattn/emmet-vim'
-
-" elm-lang
-Plug 'ElmCast/elm-vim'
 
 " Rust language support
 Plug 'rust-lang/rust.vim'
@@ -95,10 +81,8 @@ au FileType javascript nmap rr :VTerm yarn start<cr>
 Plug 'cespare/vim-toml'
 let g:autofmt_autosave = 1
 
-"Javascript plugs
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
-Plug 'evanleck/vim-svelte'
+" Language pack
+Plug 'sheerun/vim-polyglot'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -217,15 +201,15 @@ Plug 'https://github.com/tomtom/tcomment_vim.git'
 Plug 'https://github.com/terryma/vim-multiple-cursors.git'
 
 "colorschemes
-Plug 'https://github.com/matthewtodd/vim-twilight.git'
-Plug 'https://github.com/jnurmine/Zenburn.git'
-Plug 'https://github.com/vim-scripts/xoria256.vim.git'
-Plug 'https://github.com/nanotech/jellybeans.vim.git'
-Plug 'https://github.com/morhetz/gruvbox.git'
-Plug 'https://github.com/zeis/vim-kolor.git'
-Plug 'https://github.com/tomasr/molokai.git'
-Plug 'https://github.com/altercation/vim-colors-solarized.git'
-Plug 'https://github.com/nathanaelkane/vim-indent-guides.git'
+Plug 'matthewtodd/vim-twilight'
+Plug 'jnurmine/Zenburn'
+Plug 'vim-scripts/xoria256.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'morhetz/gruvbox'
+Plug 'zeis/vim-kolor'
+Plug 'tomasr/molokai'
+Plug 'altercation/vim-colors-solarized'
+Plug 'nathanaelkane/vim-indent-guides'
 Plug 'ayu-theme/ayu-vim'
 Plug 'fneu/breezy'
 Plug 'dim13/smyck.vim'
@@ -233,23 +217,17 @@ Plug 'joshdick/onedark.vim'
 Plug 'iCyMind/NeoSolarized'
 Plug 'haishanh/night-owl.vim'
 Plug 'chriskempson/base16-vim'
+Plug 'NLKNguyen/papercolor-theme'
 
 " Status line
 " Plug 'itchyny/lightline.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
-let g:airline_theme='base16_atelierdune'
-
-" Plug 'powerline/powerline'
-
+let g:airline_theme='papercolor'
 
 " Auto close parens 
 Plug 'jiangmiao/auto-pairs'
-
-"linters
-"Plug 'flowtype/vim-flow'
-"Plug 'benekastah/neomake'
 
 "Distraction free mode
 Plug 'https://github.com/junegunn/goyo.vim.git'
@@ -293,7 +271,7 @@ endif
 
 " colorscheme night-owl
 " colorscheme breezy
-colorscheme base16-atelier-dune
+colorscheme onedark
 set bg=dark
 set foldenable
 
