@@ -18,6 +18,7 @@ set hlsearch
 set ignorecase
 set smartcase
 set mousehide
+set noswapfile
 
 set cursorline
 " set cursorcolumn
@@ -30,6 +31,9 @@ let g:ale_lint_on_save = 0
 let g:ale_lint_on_text_changed = 'always'
 let g:ale_lint_delay = 100
 let g:ale_fix_on_save = 1
+
+" Setting up guifont
+set guifont=CaskaydiaCove\ Nerd\ Font:h14
 
 
 call plug#begin()
@@ -74,6 +78,7 @@ au FileType rust nmap rr :VTerm cargo run<cr>
 au FileType rust nmap re :VTerm cargo check<cr>
 
 au FileType javascript nmap rr :VTerm yarn start<cr>
+au FileType go nmap rr :VTerm go run ./main.go<cr>
 " nmap re :Build()<cr>
 " nmap rr :Run()<cr>
 
@@ -178,6 +183,7 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+" COC config end
 
 " neosnippet support
 Plug 'Shougo/neosnippet'
@@ -188,8 +194,9 @@ Plug 'diepm/vim-rest-console'
 
 "Utilities
 Plug 'https://github.com/tpope/vim-surround.git'
-Plug '/usr/local/opt/fzf'
+source /usr/share/doc/fzf/examples/fzf.vim
 Plug 'junegunn/fzf.vim'
+
 
 " vim clap
 " Plug 'liuchengxu/vim-clap'
@@ -197,8 +204,6 @@ Plug 'junegunn/fzf.vim'
 
 "tcomment plugin
 Plug 'https://github.com/tomtom/tcomment_vim.git'
-"Multiple Cursors
-Plug 'https://github.com/terryma/vim-multiple-cursors.git'
 
 "colorschemes
 Plug 'matthewtodd/vim-twilight'
@@ -233,14 +238,14 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'https://github.com/junegunn/goyo.vim.git'
 Plug 'https://github.com/junegunn/limelight.vim.git'
 
-" vim-tasks plugin
-Plug '~/projects/rust/vim-tasks'
+" vim devicons; needs to be loaded last
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 filetype plugin indent on
 syntax on
 
-let mapleader =","
+let mapleader = ","
 " set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 " indent settings by file type
@@ -257,6 +262,11 @@ nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
+nmap <C-left> :vertical res +2<CR>
+nmap <C-right> :vertical res -2<CR>
+nmap <C-up> :res -2<CR>
+nmap <C-down> :res +2<CR>
+
 nmap <leader>t :Mix test<cr>
 nmap <leader>l :Mix dialyzer<cr>
 nmap <leader>1 :tabn<cr>
@@ -359,7 +369,7 @@ let g:ale_linters = {
 \   'javascript': ['flow', 'eslint'],
 \   'typescript': ['eslint', 'tsserver'],
 \   'rust': ['rls'],
-\   'golang': ['gofmt']
+\   'golang': ['golint']
 \}
 
 let g:ale_fixers = {
@@ -368,7 +378,7 @@ let g:ale_fixers = {
 \   'json': ['prettier'],
 \   'elixir': ['mix_format'],
 \   'rust': ['rustfmt'],
-\   'golang': ['gofmt']
+\   'golang': ['goimports']
 \}
 
 
