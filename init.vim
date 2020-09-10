@@ -16,27 +16,34 @@ set textwidth=80
 set incsearch
 set hlsearch
 set ignorecase
-set smartcase
 set mousehide
 set noswapfile
 
 set cursorline
+set clipboard=unnamedplus
 " set cursorcolumn
 
 " set the title of the current file we are editing
 set title
 
-" Ale setup. Must be declared before plug initializes
-let g:ale_lint_on_save = 0
-let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_delay = 100
-let g:ale_fix_on_save = 1
+" source settings
+nmap <leader>ss :source ~/.config/nvim/init.vim<CR>
 
 " Setting up guifont
-set guifont=CaskaydiaCove\ Nerd\ Font:h14
+" set guifont=CaskaydiaCove\ Nerd\ Font:h14
+" set guifont=Operator\ Mono\ Nerd\ Font:h12
+" set guifont=mononoki\ Nerd\ Font\ Mono:h12
 
+
+"disable netrw
+let loaded_netrwPlugin = 1
 
 call plug#begin()
+" Startify
+Plug 'mhinz/vim-startify' 
+
+" Table mode
+Plug 'dhruvasagar/vim-table-mode'
 
 " Ansi escape for nicer documentation
 Plug 'powerman/vim-plugin-AnsiEsc'
@@ -46,15 +53,16 @@ Plug 'editorconfig/editorconfig-vim'
 
 " git stuff
 Plug 'airblade/vim-gitgutter'
+let g:gitgutter_map_keys = 0
 Plug 'tpope/vim-fugitive'
+
+" inline todo
+Plug 'vitalk/vim-simple-todo'
 
 " terminal management
 Plug 'mklabs/split-term.vim'
 set splitright
 set splitbelow
-
-" Async linting
-Plug 'dense-analysis/ale'
 
 " yank highlighting
 Plug 'machakann/vim-highlightedyank'
@@ -72,12 +80,23 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'https://github.com/scrooloose/nerdtree.git', { 'on':  'NERDTreeToggle' } 
 Plug 'mattn/emmet-vim'
 
+" Vim Notes
+Plug 'xolox/vim-notes'
+Plug 'xolox/vim-misc'
+
+" Align stuff
+Plug 'tommcdo/vim-lion'
+
+Plug 'iamcco/markdown-preview.nvim'
+
 " Rust language support
 Plug 'rust-lang/rust.vim'
 au FileType rust nmap rr :VTerm cargo run<cr>
 au FileType rust nmap re :VTerm cargo check<cr>
 
 au FileType javascript nmap rr :VTerm yarn start<cr>
+au FileType typescript nmap rr :VTerm yarn start<cr>
+au FileType go nmap rr :VTerm go run ./main.go<cr>
 au FileType go nmap rr :VTerm go run ./main.go<cr>
 " nmap re :Build()<cr>
 " nmap rr :Run()<cr>
@@ -86,10 +105,33 @@ au FileType go nmap rr :VTerm go run ./main.go<cr>
 Plug 'cespare/vim-toml'
 let g:autofmt_autosave = 1
 
+" colorizer
+Plug 'norcalli/nvim-colorizer.lua'
+
 " Language pack
 Plug 'sheerun/vim-polyglot'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" global plugins
+let g:coc_global_extensions = [
+      \ 'coc-actions',
+      \ 'coc-css',
+      \ 'coc-emoji',
+      \ 'coc-eslint',
+      \ 'coc-html',
+      \ 'coc-json',
+      \ 'coc-explorer',
+      \ 'coc-marketplace',
+      \ 'coc-pairs',
+      \ 'coc-prettier',
+      \ 'coc-snippets',
+      \ 'coc-tsserver',
+      \ 'coc-vimlsp',
+      \ 'coc-yaml',
+      \ 'coc-rls',
+      \ 'coc-rust-analyzer'
+      \ ]
 
 " Coc configurations
 " start
@@ -140,7 +182,7 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
+nmap <F2> <Plug>(coc-rename)
 
 " Remap for format selected region
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -183,6 +225,10 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+nnoremap <leader>oi :call CocAction('runCommand', 'editor.action.organizeImport')<CR>
+
+
+
 " COC config end
 
 " neosnippet support
@@ -194,13 +240,14 @@ Plug 'diepm/vim-rest-console'
 
 "Utilities
 Plug 'https://github.com/tpope/vim-surround.git'
-source /usr/share/doc/fzf/examples/fzf.vim
+" source /usr/share/doc/fzf/examples/fzf.vim
+Plug '~/.fzf'
 Plug 'junegunn/fzf.vim'
 
 
 " vim clap
 " Plug 'liuchengxu/vim-clap'
-" Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary' }
+Plug 'liuchengxu/vim-clap', { 'do': ':Clap install-binary!' }
 
 "tcomment plugin
 Plug 'https://github.com/tomtom/tcomment_vim.git'
@@ -221,18 +268,50 @@ Plug 'dim13/smyck.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'iCyMind/NeoSolarized'
 Plug 'haishanh/night-owl.vim'
-Plug 'chriskempson/base16-vim'
 Plug 'NLKNguyen/papercolor-theme'
+Plug 'skbolton/embark'
+Plug 'arcticicestudio/nord-vim', { 'branch': 'develop' }
+Plug 'franbach/miramare'
+Plug 'srcery-colors/srcery-vim'
+Plug 'vimoxide/vim-cinnabar'
 
 " Status line
-" Plug 'itchyny/lightline.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-let g:airline_powerline_fonts = 1
-let g:airline_theme='papercolor'
+Plug 'itchyny/lightline.vim'
 
-" Auto close parens 
-Plug 'jiangmiao/auto-pairs'
+let g:lightline = {
+      \ 'component': {
+      \   'lineinfo': ' %3l:%-2c',
+      \ },
+      \ 'component_function': {
+      \   'readonly': 'LightlineReadonly',
+      \   'fugitive': 'LightlineFugitive'
+      \ },
+      \ 'separator': { 'left': '', 'right': '' },
+      \ 'subseparator': { 'left': '', 'right': '' }
+      \ }
+function! LightlineReadonly()
+  return &readonly ? '' : ''
+endfunction
+function! LightlineFugitive()
+  if exists('*FugitiveHead')
+    let branch = FugitiveHead()
+    return branch !=# '' ? ''.branch : ''
+  endif
+  return ''
+endfunction
+
+let g:lightline.colorscheme = 'solarized'
+
+" Airline configurations
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+" let g:airline_powerline_fonts = 1
+" let g:airline_theme='night_owl'
+" let g:airline_theme='base16_nord'
+" let g:airline_theme='gruvbox'
+" let g:airline_theme='solarized'
+" let g:airline_theme='miramare'
+
 
 "Distraction free mode
 Plug 'https://github.com/junegunn/goyo.vim.git'
@@ -252,6 +331,7 @@ let mapleader = ","
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 autocmd FileType elixir setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+
 tmap <C-k> :IExHide<CR>
 
 "tab options
@@ -262,10 +342,12 @@ nmap <C-h> <C-w>h
 nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
-nmap <C-left> :vertical res +2<CR>
-nmap <C-right> :vertical res -2<CR>
+nmap <C-right> :vertical res +2<CR>
+nmap <C-left> :vertical res -2<CR>
 nmap <C-up> :res -2<CR>
 nmap <C-down> :res +2<CR>
+nmap <leader>h <C-w>H
+nmap <leader>k <C-w>K
 
 nmap <leader>t :Mix test<cr>
 nmap <leader>l :Mix dialyzer<cr>
@@ -279,9 +361,21 @@ if (has("termguicolors"))
  set termguicolors
 endif
 
-" colorscheme night-owl
-" colorscheme breezy
-colorscheme onedark
+" enable truecolor
+" if has('termguicolors')
+"   if ! has('nvim')
+"     " *xterm-true-color*
+"     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+"   endif
+" endif
+
+" colorscheme NeoSolarized
+" colorscheme onedark
+" colorscheme embark
+" colorscheme gruvbox
+" colorscheme nord 
+colorscheme miramare
+" colorscheme night-owl 
 set bg=dark
 set foldenable
 
@@ -314,12 +408,29 @@ nmap <leader>gc :Gcommit %<CR>
 
 " Vim Clap keybinding
 " nmap <C-p> :Clap files<CR>
-" imap <C-p> :Clap files<CR>
+" imap <C-p> <Esc>:Clap files<CR>
 
 " FZF config
 let $FZF_DEFAULT_COMMAND = 'rg --files'
+let $FZF_DEFAULT_OPTS = '--reverse'
 nmap <C-p> :Files<CR>
-imap <C-p> :Files<CR>
+imap <C-p> <Esc>:Files<CR>
+
+
+" better ripgrep command: ZRG
+command! -nargs=* -bang ZRG call RipgrepFzf(<q-args>, <bang>0)
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = '[ -n %s ] && rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query), shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}', '{q}')
+  let spec = {'options': ['--phony', '--prompt', 'Search > ', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+nmap <Leader>/ :ZLines<CR>
+nmap <C-S-f> :ZRG<CR>
+
+
 " This is the default extra key bindings
 let g:fzf_action = {
   \ 'ctrl-p': 'tab split',
@@ -328,12 +439,9 @@ let g:fzf_action = {
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+let g:fzf_layout = {'window': {'width': 0.55, 'height': 0.35, 'yoffset': 0.1, 'border': 'sharp'}}
 
 " In Neovim, you can set up fzf window using a Vim command
-let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_layout = { 'window': '-tabnew' }
-let g:fzf_layout = { 'window': '10split enew' }
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -357,52 +465,12 @@ let g:fzf_colors =
 " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" ALE config
-let g:ale_sign_warning = '▲'
-let g:ale_sign_error = '✗'
-highlight link ALEWarningSign String
-highlight link ALEErrorSign Title
-nmap ]l :ALENextWrap<CR>
-nmap [l :ALEPreviousWrap<CR>
-
-let g:ale_linters = {
-\   'javascript': ['flow', 'eslint'],
-\   'typescript': ['eslint', 'tsserver'],
-\   'rust': ['rls'],
-\   'golang': ['golint']
-\}
-
-let g:ale_fixers = {
-\   'javascript': ['eslint', 'prettier'],
-\   'typescript': ['eslint', 'prettier'],
-\   'json': ['prettier'],
-\   'elixir': ['mix_format'],
-\   'rust': ['rustfmt'],
-\   'golang': ['goimports']
-\}
-
-
-" Required for operations modifying multiple buffers like rename.
-set hidden
-
-" Maps K to hover, gd to goto definition, F2 to rename
-" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
 
 "gvim dont show menu bar
 set guioptions-=m
 set guioptions-=T
 set guioptions-=L
 
-" netrw setup
-
-" nmap <C-\> :Vexplore<CR>
-" imap <C-\> :Vexplore<CR>
-
-nmap <C-\> :NERDTreeToggle<CR>
-imap <C-\> :NERDTreeToggle<CR>
-
-
+nmap <C-\> :CocCommand explorer<CR>
+imap <C-\> :CocCommand explorer<CR>
 
