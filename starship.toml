@@ -1,0 +1,7 @@
+[kubernetes]
+format = '[⛵$context \($namespace\)](dimmed green) '
+disabled = false
+[kubernetes.context_aliases]
+'arn:aws:eks:eu-central-1:441212097967:cluster/ProductionBackendServices' = 'production'
+'arn:aws:eks:eu-central-1:441212097967:cluster/TestingBackendServices' = 'testing'
+'arn:aws:eks:eu-central-1:441212097967:cluster/DevelopmentBackendServices' = 'dev'
