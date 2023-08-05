@@ -3,7 +3,8 @@ abbr vim 'nvim'
 
 #shell
 abbr .sh 'source ~/.config/fish/config.fish'
-abbr esh 'nvim ~/.config/fish'
+abbr esh 'nvim ~/.config/fish/config.fish'
+abbr k 'exa -al'
 
 #docker-compose
 abbr dc 'docker-compose'
@@ -48,7 +49,7 @@ abbr gcl 'git clone --recurse-submodules'
 abbr gclean 'git clean -id'
 abbr gpristine 'git reset --hard && git clean -dffx'
 abbr gcm 'git checkout $(git_main_branch)'
-abbr gcd 'git checkout develop'
+abbr gcd 'git checkout development'
 abbr gcmsg 'git commit -m'
 abbr gco 'git checkout'
 abbr gcount 'git shortlog -sn'
@@ -187,3 +188,11 @@ abbr gamc 'git am --continue'
 abbr gams 'git am --skip'
 abbr gama 'git am --abort'
 abbr gamscp 'git am --show-current-patch'
+
+# terraform
+abbr tf 'terraform'
+abbr k8 'kubectl'
+abbr pods 'kubectl get pods --sort-by=.status.startTime '
+abbr kdev 'kubectl config use-context arn:aws:eks:eu-central-1:441212097967:cluster/DevelopmentBackendServices'
+abbr ktest 'kubectl config use-context arn:aws:eks:eu-central-1:441212097967:cluster/TestingBackendServices'
+abbr kprod 'kubectl config use-context arn:aws:eks:eu-central-1:441212097967:cluster/ProductionBackendServices'

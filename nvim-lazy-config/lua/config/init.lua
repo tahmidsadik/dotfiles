@@ -355,16 +355,21 @@ require("lazy").setup({
 					end,
 				},
 				sources = cmp.config.sources({
-					{ name = "nvim_lsp" },
+					{
+						name = "nvim_lsp",
+						entry_filter = function(entry, ctx)
+							return cmp.lsp.CompletionItemKind.Text ~= entry:get_kind()
+						end,
+					},
 					{ name = "luasnip" },
 					-- { name = "buffer" },
 					{ name = "path" },
 				}),
-				experimental = {
-					ghost_text = {
-						hl_group = "CmpGhostText",
-					},
-				},
+				-- experimental = {
+				-- 	ghost_text = {
+				-- 		hl_group = "CmpGhostText",
+				-- 	},
+				-- },
 				sorting = defaults.sorting,
 				mapping = cmp.mapping.preset.insert({
 					["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -423,6 +428,11 @@ require("lazy").setup({
 				end,
 				desc = "Find files",
 			},
+			{
+				"<C-f>",
+				"<cmd>Telescope live_grep<CR>",
+				desc = "Search text",
+			},
 		},
 		-- change some options
 		opts = {
@@ -457,7 +467,14 @@ require("lazy").setup({
 		config = function()
 			require("toggleterm").setup({
 				open_mapping = [[<c-t>]],
-				direction = "horizontal",
+				direction = "vertical",
+				size = function(term)
+					if term.direction == "horizontal" then
+						return 15
+					elseif term.direction == "vertical" then
+						return vim.o.columns * 0.45
+					end
+				end,
 			})
 		end,
 	},
@@ -493,10 +510,3 @@ require("lazy").setup({
 --- setup minit comment
 
 require("mini.comment").setup()
-
-local opts = { noremap = true, silent = true }
--- vim.keymap.set("n", "<C-t>", "<cmd>ToggleTerm<CR>", opts)
-
--- go run project setup
--- vim.keymap.set("n", "<leader>rr", "<cmd>TermExec cmd='go run %'<CR>", opts)
-vim.keymap.set("n", "<leader>rr", "<cmd>TermExec cmd='npm start'<CR>", opts)
