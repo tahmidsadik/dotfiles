@@ -1,4 +1,4 @@
 conf.d/
-functions/
 fish_variables
-
+functions/*
+!functions/git_main_branch.fish
