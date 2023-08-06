@@ -5,18 +5,14 @@ end
 # setup volta
 set -gx VOLTA_HOME $HOME/.volta
 
-set -x BUN_INSTALL $HOME/.bun
-
 # add binaries to path
-set -x PATH /opt/homebrew/bin \
-    /usr/local/bin \
-    $BUN_INSTALL/bin \
+set -x PATH /usr/local/bin \
     $HOME/.volta/bin \
-    /Users/tahmid/go/bin \
+    /usr/local/go/bin \
     $HOME/.jb-tools/bin \
-    $HOME/roc \
-    /Users/tahmid/Library/Python/3.10/bin \
     $HOME/zig \
+		$HOME/.local/bin \
+		$GOPATH/bin \
     $PATH
 
 
@@ -27,10 +23,10 @@ set -x PATH /opt/homebrew/bin \
 # set -gx FNM_DIR "/Users/tahmid/Library/Application Support/fnm";
 # set -gx FNM_ARCH "arm64";
 # set -gx FNM_NODE_DIST_MIRROR "https://nodejs.org/dist";
-set -gx TERM "alacritty";
 
 set -gx PATH "$HOME/.cargo/bin" $PATH;
 zoxide init fish | source
+source ~/.config/fish/abbreviations/functions/git_main_branch.fish
 source ~/.config/fish/abbreviations/abbreviations.fish
 
 starship init fish | source
