@@ -1,41 +1,3 @@
-set ruler
-
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set smartindent
-set autoindent
-
-set number
-set linespace=3
-set wrap
-set textwidth=80
-set incsearch
-set hlsearch
-set ignorecase
-set mousehide
-set noswapfile
-
-set clipboard=unnamedplus
-
-let mapleader = ","
-
-set title
-
-" source settings
-nmap <leader>ss :source ~/.config/nvim/init.vim<CR>
-
-" Setting up guifont
-" set guifont=CaskaydiaCove\ Nerd\ Font\ Mono:h12
-" set guifont=Operator\ Mono\ Nerd\ Font:h12
-" set guifont=mononoki\ Nerd\ Font\ Mono:h12
-" set guifont=Fira\ Code\ Light:h12
-set guifont=OperatorMono\ Nerd\ Font:h14
-
-
-"disable netrw
-let loaded_netrwPlugin = 1
-
 lua << EOF
 
 require('config')
@@ -43,6 +5,13 @@ require('lsp')
 require('root')
 
 EOF
+
+" let g:node_host_prog = '/Users/tahmid/Library/Application Support/fnm/node-versions/v18.16.0/installation/bin/node'
+let $PATH = '/Users/tahmid/Library/Application Support/fnm/node-versions/v18.16.0/installation/bin:' . $PATH
+
+" source settings
+nmap <leader>ss :source ~/.config/nvim/init.vim<CR>
+
 
 "switching between panes
 nmap <C-h> <C-w>h
@@ -74,8 +43,6 @@ if (has("termguicolors"))
  set termguicolors
 endif
 
-set bg=dark
-set foldenable
 
 " imap <leader><tab> <C-x><C-o>
 
@@ -110,46 +77,46 @@ nmap <leader>gc :Gcommit %<CR>
 
 
 " better ripgrep command: ZRG
-command! -nargs=* -bang ZRG call RipgrepFzf(<q-args>, <bang>0)
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = '[ -n %s ] && rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query), shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}', '{q}')
-  let spec = {'options': ['--phony', '--prompt', 'Search > ', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
+" command! -nargs=* -bang ZRG call RipgrepFzf(<q-args>, <bang>0)
+" function! RipgrepFzf(query, fullscreen)
+"   let command_fmt = '[ -n %s ] && rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+"   let initial_command = printf(command_fmt, shellescape(a:query), shellescape(a:query))
+"   let reload_command = printf(command_fmt, '{q}', '{q}')
+"   let spec = {'options': ['--phony', '--prompt', 'Search > ', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+" endfunction
 
-nmap <Leader>/ :ZLines<CR>
-nmap <C-f> :ZRG<CR>
+" nmap <Leader>/ :ZLines<CR>
+" nmap <C-f> :ZRG<CR>
 
 
 " This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-p': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+" let g:fzf_action = {
+"   \ 'ctrl-p': 'tab split',
+"   \ 'ctrl-x': 'split',
+"   \ 'ctrl-v': 'vsplit' }
 
 " Default fzf layout
 " - down / up / left / right
-let g:fzf_layout = {'window': {'width': 0.80, 'height': 0.70, 'yoffset': 0.1, 'border': 'sharp'}}
+" let g:fzf_layout = {'window': {'width': 0.80, 'height': 0.70, 'yoffset': 0.1, 'border': 'sharp'}}
 
 " In Neovim, you can set up fzf window using a Vim command
 
 " Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+" let g:fzf_colors =
+" \ { 'fg':      ['fg', 'Normal'],
+"   \ 'bg':      ['bg', 'Normal'],
+"   \ 'hl':      ['fg', 'Comment'],
+"   \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+"   \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+"   \ 'hl+':     ['fg', 'Statement'],
+"   \ 'info':    ['fg', 'PreProc'],
+"   \ 'border':  ['fg', 'Ignore'],
+"   \ 'prompt':  ['fg', 'Conditional'],
+"   \ 'pointer': ['fg', 'Exception'],
+"   \ 'marker':  ['fg', 'Keyword'],
+"   \ 'spinner': ['fg', 'Label'],
+"   \ 'header':  ['fg', 'Comment'] }
 
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
@@ -159,9 +126,9 @@ let g:fzf_colors =
 
 
 "gvim dont show menu bar
-set guioptions-=m
-set guioptions-=T
-set guioptions-=L
+" set guioptions-=m
+" set guioptions-=T
+" set guioptions-=L
 
 nmap <C-\> :NvimTreeToggle<CR>
 
