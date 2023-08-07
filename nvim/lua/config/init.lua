@@ -657,7 +657,6 @@ vim.opt.textwidth = 120
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
 vim.opt.ignorecase = true
-vim.opt.mousehide = true
 vim.opt.swapfile = false
 vim.opt.clipboard = "unnamedplus"
 
