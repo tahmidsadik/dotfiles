@@ -6,12 +6,8 @@ require('root')
 
 EOF
 
-" let g:node_host_prog = '/Users/tahmid/Library/Application Support/fnm/node-versions/v18.16.0/installation/bin/node'
-let $PATH = '/Users/tahmid/Library/Application Support/fnm/node-versions/v18.16.0/installation/bin:' . $PATH
-
 " source settings
 nmap <leader>ss :source ~/.config/nvim/init.vim<CR>
-
 
 "switching between panes
 nmap <C-h> <C-w>h
@@ -26,9 +22,6 @@ nmap <A-down> :res +2<CR>
 nmap <leader>h <C-w>H
 nmap <leader>k <C-w>K
 
-nmap <leader>1 :tabn<cr>
-nmap <leader>2 :tabp<cr>
-nmap <leader><tab> :b#<cr>
 "vimrc editing
 nmap <leader>ev :tabedit $MYVIMRC<CR>
 
@@ -60,7 +53,7 @@ set formatoptions=qrn1
 
 " git operations hotkeys
 " aliases the terminal keys e.g. gst for git status, ga for git add etc
-nmap <leader>gst :Gstatus<CR>
+nmap <leader>gst :Git<CR>
 nmap <leader>gd :Gdiff<CR>
 nmap <leader>grm :Gdelete<CR>
 nmap <leader>gmv :Gmove<CR>
