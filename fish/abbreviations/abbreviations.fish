@@ -1,5 +1,5 @@
 #vim
-abbr vim 'nvim'
+abbr vim nvim
 
 #shell
 abbr .sh 'source ~/.config/fish/config.fish'
@@ -7,10 +7,10 @@ abbr esh 'nvim ~/.config/'
 abbr k 'exa -al'
 
 #docker-compose
-abbr dc 'docker-compose'
+abbr dc docker-compose
 
 # git
-abbr g 'git'
+abbr g git
 
 abbr ga 'git add'
 abbr gaa 'git add --all'
@@ -75,7 +75,7 @@ abbr gfg 'git ls-files | grep'
 abbr gg 'git gui citool'
 abbr gga 'git gui citool --amend'
 
-abbr ggpur 'ggu'
+abbr ggpur ggu
 abbr ggpull 'git pull origin "(git_current_branch)"'
 abbr ggpush 'git push origin "(git_current_branch)"'
 
@@ -105,7 +105,7 @@ abbr glods "git log --graph --pretty '%Cred%h%Creset -%C(auto)%d%Creset %s %Cgre
 abbr glola "git log --graph --pretty '%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --all"
 abbr glog 'git log --oneline --decorate --graph'
 abbr gloga 'git log --oneline --decorate --graph --all'
-abbr glp "_git_log_prettily"
+abbr glp _git_log_prettily
 
 abbr gm 'git merge'
 abbr gmom 'git merge origin/(git_main_branch)'
@@ -189,14 +189,18 @@ abbr gams 'git am --skip'
 abbr gama 'git am --abort'
 abbr gamscp 'git am --show-current-patch'
 
+# Cat
+abbr cat bat
+
 # Task management 
 abbr todo nvim ~/.todo/todo.md
 
 # terraform
-abbr tf 'terraform'
+abbr tf terraform
 # kubernetes
-abbr k8 'kubectl'
+abbr k8 kubectl
 abbr pods 'kubectl get pods --sort-by=.status.startTime '
 abbr kdev 'kubectl config use-context arn:aws:eks:eu-central-1:441212097967:cluster/DevelopmentBackendServices'
 abbr ktest 'kubectl config use-context arn:aws:eks:eu-central-1:441212097967:cluster/TestingBackendServices'
 abbr kprod 'kubectl config use-context arn:aws:eks:eu-central-1:441212097967:cluster/ProductionBackendServices'
+abbr alc 'alacritty-colorscheme apply (alacritty-colorscheme list | fzf)'
