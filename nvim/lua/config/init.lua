@@ -2,8 +2,9 @@
 vim.g.mapleader = ","
 -- add static node js path so it works well with volta
 
-local node_bin_path = "/home/tahmid/.volta/tools/image/node/20.5.0/bin"
-vim.cmd("let $PATH = '" .. node_bin_path .. ":' . $PATH")
+local home_dir = os.getenv("HOME")
+local node_bin_path = "/.volta/tools/image/node/20.5.1/bin"
+vim.cmd("let $PATH = '" .. home_dir .. node_bin_path .. ":' . $PATH")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -194,9 +195,9 @@ require("lazy").setup({
 					go = true,
 					rust = true,
 					zig = true,
+					lua = true,
 					["*"] = false,
 				},
-				copilot_node_command = "/home/tahmid/.volta/tools/image/node/20.5.0/bin/node",
 			})
 		end,
 	},
@@ -360,7 +361,7 @@ require("lazy").setup({
 					settings = {
 						Lua = {
 							workspace = {
-								checkThirdParty = false,
+								checkThirdParty = true,
 							},
 							completion = {
 								callSnippet = "Replace",
@@ -610,9 +611,13 @@ require("lazy").setup({
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
 					["<C-Space>"] = cmp.mapping.complete(),
 					["<CR>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
-					["<Tab>"] = vim.schedule_wrap(function(fallback)
-						if cmp.visible() and has_words_before() then
-							cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+					["<Tab>"] = cmp.mapping(function(fallback)
+						if cmp.visible() then
+							cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace })
+						elseif luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						elseif has_words_before() then
+							cmp.complete()
 						else
 							fallback()
 						end
