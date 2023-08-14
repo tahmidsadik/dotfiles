@@ -1,6 +1,7 @@
 -- leader needs to be set before loading plugins
 vim.g.mapleader = ","
 -- add static node js path so it works well with volta
+require("config.neovide").setup({})
 
 local home_dir = os.getenv("HOME")
 local node_bin_path = "/.volta/tools/image/node/20.5.1/bin"
@@ -71,7 +72,6 @@ require("lazy").setup({
           function() return require("noice").api.status.command.get() end,
           cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
           color = Util.fg("Statement"),
-          
         },
         -- stylua: ignore
         {
@@ -236,8 +236,15 @@ require("lazy").setup({
 			ensure_installed = {
 				"bash",
 				"c",
-				"html",
+				"cpp",
+				"d",
+				"go",
+				"rust",
 				"javascript",
+				"typescript",
+				"sql",
+				"html",
+				"css",
 				"jsdoc",
 				"json",
 				"lua",
@@ -249,7 +256,6 @@ require("lazy").setup({
 				"query",
 				"regex",
 				"tsx",
-				"typescript",
 				"vim",
 				"vimdoc",
 				"yaml",

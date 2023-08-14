@@ -7,7 +7,7 @@ require('root')
 EOF
 
 " source settings
-nmap <leader>ss :source ~/.config/nvim/init.vim<CR>
+nmap <leader>ss :source $MYVIMRC<CR>
 
 "switching between panes
 nmap <C-h> <C-w>h
@@ -124,9 +124,3 @@ nmap <leader>gc :Gcommit %<CR>
 " set guioptions-=L
 
 nmap <C-\> :NvimTreeToggle<CR>
-
-
-if exists("g:neovide")
-  set guifont=OperatorMono\ Nerd\ Font:h16
-    " Put anything you want to happen only in Neovide here
-endif
