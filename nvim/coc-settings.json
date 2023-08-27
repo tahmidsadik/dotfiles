@@ -1,6 +1,0 @@
-{
-  "eslint.filetypes":["typescript"],
-  "eslint.autoFixOnSave": true,
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "css", "markdown", "rust"],
-  "explorer.icon.enableNerdfont": true
-}

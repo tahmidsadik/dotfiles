@@ -54,12 +54,12 @@ set formatoptions=qrn1
 " git operations hotkeys
 " aliases the terminal keys e.g. gst for git status, ga for git add etc
 nmap <leader>gst :Git<CR>
-nmap <leader>gd :Gdiff<CR>
+nmap <leader>gd :Gvdiff<CR>
 nmap <leader>grm :Gdelete<CR>
 nmap <leader>gmv :Gmove<CR>
 nmap <leader>gco :Gread<CR>
 nmap <leader>ga :Gwrite<CR>
-nmap <leader>gc :Gcommit %<CR>
+nmap <leader>gc :Git commit<CR>
 
 
 " FZF config
