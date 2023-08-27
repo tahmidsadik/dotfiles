@@ -2,6 +2,7 @@
 vim.g.mapleader = ","
 -- add static node js path so it works well with volta
 require("config.neovide").setup({})
+require("config.projectrunner").setup({})
 
 local home_dir = os.getenv("HOME")
 local node_bin_path = "/.volta/tools/image/node/20.5.1/bin"
@@ -28,7 +29,7 @@ require("lazy").setup({
 		priority = 1000, -- make sure to load this before all the other start plugins
 		config = function()
 			-- load the colorscheme here
-			vim.cmd([[colorscheme nord]])
+			vim.cmd([[colorscheme gruvbox-material]])
 		end,
 	},
 	"LazyVim/LazyVim",
@@ -44,10 +45,14 @@ require("lazy").setup({
 					theme = "auto",
 					globalstatus = true,
 					disabled_filetypes = { statusline = { "dashboard", "alpha" } },
+					-- section_separators = { left = "", right = "" },
+					-- component_separators = { left = "", right = "" },
+					component_separators = "|",
+					section_separators = { left = "", right = "" },
 				},
 				sections = {
 					lualine_a = { "mode" },
-					lualine_b = { "branch" },
+					lualine_b = { "buffers" },
 					lualine_c = {
 						{
 							"diagnostics",
@@ -115,6 +120,7 @@ require("lazy").setup({
 	},
 	{
 		"akinsho/bufferline.nvim",
+		cond = false,
 		event = "VeryLazy",
 		keys = {
 			{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
@@ -259,6 +265,7 @@ require("lazy").setup({
 				"vim",
 				"vimdoc",
 				"yaml",
+				"zig",
 			},
 			incremental_selection = {
 				enable = true,
@@ -534,6 +541,8 @@ require("lazy").setup({
 				--- shell
 				"shfmt",
 				"bash-language-server",
+				--- zig
+				"zls",
 			},
 		},
 
@@ -691,9 +700,23 @@ require("lazy").setup({
 				desc = "Find files",
 			},
 			{
+				"<leader>ff",
+				function()
+					require("telescope.builtin").find_files()
+				end,
+				desc = "Find files",
+			},
+			{
 				"<C-f>",
 				"<cmd>Telescope live_grep<CR>",
 				desc = "Search text",
+			},
+			{
+				"<leader>fb",
+				function()
+					require("telescope.builtin").buffers()
+				end,
+				desc = "Find buffers",
 			},
 		},
 		-- change some options
@@ -930,27 +953,5 @@ vim.opt.background = "dark"
 vim.opt.foldenable = true
 
 --- keybinding for terminal
-
-local run_project = function()
-	local term_cmd = ""
-	if vim.bo.filetype == "rust" then
-		print("running rust project")
-		term_cmd = "cargo run"
-	elseif vim.bo.filetype == "typescript" or vim.bo.filetype == "javascript" then
-		print("running typescript project")
-		term_cmd = "npm start"
-	elseif vim.bo.filetype == "typescript" or vim.bo.filetype == "go" then
-		print("running go project")
-		term_cmd = "make run"
-	end
-	if term_cmd ~= "" then
-		print("Executing command")
-		vim.cmd(string.format(":TermExec cmd='%s'", term_cmd))
-	else
-		print("No run config configured for filetype ", vim.bo.filetype)
-	end
-end
-
-vim.keymap.set("n", "<leader>rr", run_project, {})
-vim.keymap.set("n", "<S-h>", ":bnext<cr>", {})
-vim.keymap.set("n", "<S-l>", ":bprevious<cr>", {})
+vim.keymap.set("n", "<S-h>", ":bprevious<cr>", {})
+vim.keymap.set("n", "<S-l>", ":bnext<cr>", {})
