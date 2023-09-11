@@ -692,6 +692,36 @@ require("lazy").setup({
 			}
 		end,
 	},
+
+	-- eslint
+	{
+		"MunifTanjim/eslint.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		dependencies = { "jose-elias-alvarez/null-ls.nvim" },
+		config = function()
+			local eslint = require("eslint")
+			eslint.setup({
+				bin = "eslint", -- or `eslint_d`
+				code_actions = {
+					enable = true,
+					apply_on_save = {
+						enable = true,
+						types = { "directive", "problem", "suggestion", "layout" },
+					},
+					disable_rule_comment = {
+						enable = true,
+						location = "separate_line", -- or `same_line`
+					},
+				},
+				diagnostics = {
+					enable = true,
+					report_unused_disable_directives = false,
+					run_on = "type", -- or `save`
+				},
+			})
+		end,
+	},
+
 	{ "cohama/lexima.vim" },
 	{ "https://github.com/tpope/vim-surround.git" },
 	{ "diepm/vim-rest-console" },
@@ -903,6 +933,10 @@ require("lazy").setup({
 				inc_rename = true,
 			},
 		},
+	},
+	{
+		"mg979/vim-visual-multi",
+		event = "InsertEnter",
 	},
 
 	"matthewtodd/vim-twilight",

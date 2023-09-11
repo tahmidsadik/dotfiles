@@ -15,10 +15,10 @@ nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 " resizing windows 
-nmap <A-right> :vertical res +2<CR>
-nmap <A-left> :vertical res -2<CR>
-nmap <A-up> :res -2<CR>
-nmap <A-down> :res +2<CR>
+nmap <M-right> :vertical res +2<CR>
+nmap <M-left> :vertical res -2<CR>
+nmap <M-up> :res -2<CR>
+nmap <M-down> :res +2<CR>
 nmap <leader>h <C-w>H
 nmap <leader>k <C-w>K
 
