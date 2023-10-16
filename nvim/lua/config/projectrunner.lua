@@ -12,6 +12,9 @@ local run_project = function()
 	elseif vim.bo.filetype == "zig" then
 		print("running zig project")
 		term_cmd = "zig run src/main.zig"
+	elseif vim.bo.filetype == "sh" then
+		print("running bash script")
+		term_cmd = "bash %"
 	end
 	if term_cmd ~= "" then
 		print("Executing command")
