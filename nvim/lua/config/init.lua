@@ -29,7 +29,7 @@ require("lazy").setup({
 		priority = 1000, -- make sure to load this before all the other start plugins
 		config = function()
 			-- load the colorscheme here
-			vim.cmd([[colorscheme gruvbox-material]])
+			vim.cmd([[colorscheme tokyonight-moon]])
 		end,
 	},
 	"LazyVim/LazyVim",
@@ -387,7 +387,7 @@ require("lazy").setup({
 					settings = {
 						Lua = {
 							workspace = {
-								checkThirdParty = true,
+								checkThirdParty = false,
 							},
 							completion = {
 								callSnippet = "Replace",
@@ -407,8 +407,13 @@ require("lazy").setup({
 			setup = {
 				-- example to setup with typescript.nvim
 				-- tsserver = function(_, opts)
-				--   require("typescript").setup({ server = opts })
-				--   return true
+				-- 	require("typescript").setup({
+				-- 		server = opts,
+				-- 		on_attach = function(client)
+				-- 			client.resolved_capabilities.document_formatting = false
+				-- 		end,
+				-- 	})
+				-- 	return true
 				-- end,
 				-- Specify * to use this function as a fallback for any server
 				-- ["*"] = function(server, opts) end,
@@ -535,6 +540,10 @@ require("lazy").setup({
 		end,
 	},
 	{ "williamboman/mason-lspconfig.nvim" },
+	{
+		"mg979/vim-visual-multi",
+		branch = "master",
+	},
 	{
 		"williamboman/mason.nvim",
 		cmd = "Mason",
@@ -684,9 +693,11 @@ require("lazy").setup({
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
 				sources = {
 					nls.builtins.formatting.fish_indent,
+					-- nls.builtins.formatting.prettier,
 					nls.builtins.diagnostics.fish,
 					nls.builtins.formatting.stylua,
 					nls.builtins.formatting.shfmt,
+					-- nls.builtins.diagnostics.eslint,
 					-- nls.builtins.diagnostics.flake8,
 				},
 			}
@@ -968,3 +979,6 @@ vim.opt.foldenable = true
 --- keybinding for terminal
 vim.keymap.set("n", "<S-h>", ":bprevious<cr>", {})
 vim.keymap.set("n", "<S-l>", ":bnext<cr>", {})
+vim.keymap.set("n", "<leader>oa", function()
+	vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments = { vim.fn.expand("%:p") } })
+end, {})
