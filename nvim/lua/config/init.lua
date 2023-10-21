@@ -76,24 +76,24 @@ require("lazy").setup({
         {
           function() return require("noice").api.status.command.get() end,
           cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-          color = Util.fg("Statement"),
+          color = Util.ui.fg("Statement"),
         },
         -- stylua: ignore
         {
           function() return require("noice").api.status.mode.get() end,
           cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-          color = Util.fg("Constant"),
+          color = Util.ui.fg("Constant"),
         },
         -- stylua: ignore
         {
           function() return "  " .. require("dap").status() end,
           cond = function () return package.loaded["dap"] and require("dap").status() ~= "" end,
-          color = Util.fg("Debug"),
+          color = Util.ui.fg("Debug"),
         },
 						{
 							require("lazy.status").updates,
 							cond = require("lazy.status").has_updates,
-							color = Util.fg("Special"),
+							color = Util.ui.fg("Special"),
 						},
 						{
 							"diff",
@@ -363,7 +363,7 @@ require("lazy").setup({
 			-- add any global capabilities here
 			capabilities = {},
 			-- Automatically format on save
-			autoformat = true,
+			autoformat = false,
 			-- Enable this to show formatters used in a notification
 			-- Useful for debugging formatter issues
 			format_notify = false,
@@ -430,7 +430,7 @@ require("lazy").setup({
 				require("neoconf").setup(require("lazy.core.plugin").values(plugin, "opts", false))
 			end
 			-- setup autoformat
-			require("lazyvim.plugins.lsp.format").setup(opts)
+			-- require("lazyvim.plugins.lsp.format").setup(opts)
 			-- setup formatting and keymaps
 			Util.on_attach(function(client, buffer)
 				require("lazyvim.plugins.lsp.keymaps").on_attach(client, buffer)
@@ -530,10 +530,10 @@ require("lazy").setup({
 				mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
 			end
 
-			if Util.lsp_get_config("denols") and Util.lsp_get_config("tsserver") then
+			if Util.lsp.get_config("denols") and Util.lsp.get_config("tsserver") then
 				local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-				Util.lsp_disable("tsserver", is_deno)
-				Util.lsp_disable("denols", function(root_dir)
+				Util.lsp.lsp_disable("tsserver", is_deno)
+				Util.lsp.lsp_disable("denols", function(root_dir)
 					return not is_deno(root_dir)
 				end)
 			end
@@ -693,11 +693,11 @@ require("lazy").setup({
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
 				sources = {
 					nls.builtins.formatting.fish_indent,
-					-- nls.builtins.formatting.prettier,
+					nls.builtins.formatting.prettier,
 					nls.builtins.diagnostics.fish,
 					nls.builtins.formatting.stylua,
 					nls.builtins.formatting.shfmt,
-					-- nls.builtins.diagnostics.eslint,
+					nls.builtins.diagnostics.eslint,
 					-- nls.builtins.diagnostics.flake8,
 				},
 			}
@@ -709,6 +709,7 @@ require("lazy").setup({
 		"MunifTanjim/eslint.nvim",
 		event = { "BufReadPost", "BufNewFile" },
 		dependencies = { "jose-elias-alvarez/null-ls.nvim" },
+    cond = false,
 		config = function()
 			local eslint = require("eslint")
 			eslint.setup({
