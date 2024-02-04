@@ -3,6 +3,7 @@ vim.g.mapleader = ","
 -- add static node js path so it works well with volta
 require("config.neovide").setup({})
 require("config.projectrunner").setup({})
+require("config.pane_keymap").setup({})
 
 local home_dir = os.getenv("HOME")
 local node_bin_path = "/.volta/tools/image/node/20.5.1/bin"
@@ -118,39 +119,6 @@ require("lazy").setup({
 			}
 		end,
 	},
-	{
-		"akinsho/bufferline.nvim",
-		cond = false,
-		event = "VeryLazy",
-		keys = {
-			{ "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle pin" },
-			{ "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete non-pinned buffers" },
-		},
-		opts = {
-			options = {
-      -- stylua: ignore
-      close_command = function(n) require("mini.bufremove").delete(n, false) end,
-      -- stylua: ignore
-      right_mouse_command = function(n) require("mini.bufremove").delete(n, false) end,
-				diagnostics = "nvim_lsp",
-				always_show_bufferline = false,
-				diagnostics_indicator = function(_, _, diag)
-					local icons = require("lazyvim.config").icons.diagnostics
-					local ret = (diag.error and icons.Error .. diag.error .. " " or "")
-						.. (diag.warning and icons.Warn .. diag.warning or "")
-					return vim.trim(ret)
-				end,
-				offsets = {
-					{
-						filetype = "neo-tree",
-						text = "Neo-tree",
-						highlight = "Directory",
-						text_align = "left",
-					},
-				},
-			},
-		},
-	},
 
 	{
 		"dstein64/vim-startuptime",
@@ -174,7 +142,7 @@ require("lazy").setup({
 		build = "make install_jsregexp",
 	},
 
-	"mhinz/vim-startify",
+	{ "mhinz/vim-startify", lazy = false },
 	{ "dhruvasagar/vim-table-mode", event = "VeryLazy" },
 	"powerman/vim-plugin-AnsiEsc",
 	"ziglang/zig.vim",
@@ -222,7 +190,6 @@ require("lazy").setup({
 	},
 	{
 		"zbirenbaum/copilot-cmp",
-		cond = false,
 		dependencies = {
 			"zbirenbaum/copilot.lua",
 		},
@@ -326,7 +293,6 @@ require("lazy").setup({
 	},
 	"cespare/vim-toml",
 	"norcalli/nvim-colorizer.lua",
-	{ "sheerun/vim-polyglot", cond = false },
 	--- lsp
 	{
 		"neovim/nvim-lspconfig",
@@ -557,6 +523,8 @@ require("lazy").setup({
 				"gopls",
 				--- js/ts
 				"typescript-language-server",
+				"prettier",
+				"eslint-lsp",
 				--- lua
 				"stylua",
 				"lua-language-server",
@@ -677,7 +645,12 @@ require("lazy").setup({
 		config = function()
 			vim.g.loaded_netrw = 1
 			vim.g.loaded_netrwPlugin = 1
-			require("nvim-tree").setup()
+			require("nvim-tree").setup({
+				filters = {
+					git_ignored = false,
+				},
+			})
+			require("config.sidebar_keymap").setup({})
 		end,
 	},
 	{ "nvim-tree/nvim-web-devicons", lazy = true },
@@ -685,10 +658,38 @@ require("lazy").setup({
 	{ "nvim-lua/plenary.nvim" },
 	{
 		"jose-elias-alvarez/null-ls.nvim",
+		cond = false,
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = { "mason.nvim" },
 		opts = function()
 			local nls = require("null-ls")
+			nls.setup({
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						vim.keymap.set("n", "<Leader>f", function()
+							vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+						end, { buffer = bufnr, desc = "[lsp] format" })
+
+						-- format on save
+						vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+						vim.api.nvim_create_autocmd(event, {
+							buffer = bufnr,
+							group = group,
+							callback = function()
+								vim.lsp.buf.format({ bufnr = bufnr, async = async })
+							end,
+							desc = "[lsp] format on save",
+						})
+					end
+
+					if client.supports_method("textDocument/rangeFormatting") then
+						vim.keymap.set("x", "<Leader>f", function()
+							vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+						end, { buffer = bufnr, desc = "[lsp] format" })
+					end
+				end,
+			})
+
 			return {
 				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
 				sources = {
@@ -703,37 +704,30 @@ require("lazy").setup({
 			}
 		end,
 	},
-
-	-- eslint
 	{
-		"MunifTanjim/eslint.nvim",
-		event = { "BufReadPost", "BufNewFile" },
-		dependencies = { "jose-elias-alvarez/null-ls.nvim" },
-    cond = false,
-		config = function()
-			local eslint = require("eslint")
-			eslint.setup({
-				bin = "eslint", -- or `eslint_d`
-				code_actions = {
-					enable = true,
-					apply_on_save = {
-						enable = true,
-						types = { "directive", "problem", "suggestion", "layout" },
-					},
-					disable_rule_comment = {
-						enable = true,
-						location = "separate_line", -- or `same_line`
-					},
-				},
-				diagnostics = {
-					enable = true,
-					report_unused_disable_directives = false,
-					run_on = "type", -- or `save`
-				},
-			})
-		end,
+		"stevearc/conform.nvim",
+		opts = {
+			formatters_by_ft = {
+				lua = { "stylua" },
+				-- Conform will run multiple formatters sequentially
+				python = { "isort", "black" },
+				-- Use a sub-list to run only the first available formatter
+				javascript = { { "prettierd", "prettier" } },
+				typescript = { { "prettierd", "prettier" } },
+			},
+			format_on_save = {
+				-- These options will be passed to conform.format()
+				timeout_ms = 500,
+				lsp_fallback = true,
+			},
+		},
 	},
 
+	-- prettier
+	{
+		"MunifTanjim/prettier.nvim",
+		cond = false,
+	},
 	{ "cohama/lexima.vim" },
 	{ "https://github.com/tpope/vim-surround.git" },
 	{ "diepm/vim-rest-console" },
@@ -828,7 +822,12 @@ require("lazy").setup({
 			})
 		end,
 	},
-	{ "https://tpope.io/vim/fugitive.git", config = function() end },
+	{
+		"https://tpope.io/vim/fugitive.git",
+		config = function()
+			require("config.git_keymaps").setup({})
+		end,
+	},
 	{
 		"lewis6991/gitsigns.nvim",
 		event = { "BufReadPre", "BufNewFile" },

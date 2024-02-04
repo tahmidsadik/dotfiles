@@ -1,10 +1,6 @@
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 
-local getFileName = function()
-	-- print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-end
-
 local opts = { noremap = true, silent = true }
 vim.keymap.set("n", "<space>e", vim.diagnostic.open_float, opts)
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
@@ -83,15 +79,15 @@ vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = 
 vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
 
 -- null-ls setup
-local null_ls = require("null-ls")
-
-null_ls.setup({
-	sources = {
-		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.diagnostics.eslint,
-		null_ls.builtins.completion.spell,
-	},
-})
+-- local null_ls = require("null-ls")
+--
+-- null_ls.setup({
+-- 	sources = {
+-- 		null_ls.builtins.formatting.stylua,
+-- 		null_ls.builtins.diagnostics.eslint,
+-- 		null_ls.builtins.completion.spell,
+-- 	},
+-- })
 
 -- Eslint setup
 -- local eslint = require("eslint")

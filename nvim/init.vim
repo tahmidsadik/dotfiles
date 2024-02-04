@@ -1,26 +1,13 @@
 lua << EOF
 
 require('config')
-require('lsp')
-require('root')
+-- require('lsp')
+-- require('root')
 
 EOF
 
 " source settings
 nmap <leader>ss :source $MYVIMRC<CR>
-
-"switching between panes
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
-" resizing windows 
-nmap <M-right> :vertical res +2<CR>
-nmap <M-left> :vertical res -2<CR>
-nmap <M-up> :res -2<CR>
-nmap <M-down> :res +2<CR>
-nmap <leader>h <C-w>H
-nmap <leader>k <C-w>K
 
 "vimrc editing
 nmap <leader>ev :tabedit $MYVIMRC<CR>
@@ -42,24 +29,12 @@ endif
 "More useful command line options
 set wildmenu
 set wildmode=list:longest
-"Opens a vertiocal split and switches over (\v)
-nnoremap <leader>v <C-w>v
 
 set showmatch
 set formatoptions=qrn1
 " if has("autocmd")
 "   autocmd bufwritepost init.vim source $MYVIMRC
 " endif
-
-" git operations hotkeys
-" aliases the terminal keys e.g. gst for git status, ga for git add etc
-nmap <leader>gst :Git<CR>
-nmap <leader>gd :Gvdiff<CR>
-nmap <leader>grm :Gdelete<CR>
-nmap <leader>gmv :Gmove<CR>
-nmap <leader>gco :Gread<CR>
-nmap <leader>ga :Gwrite<CR>
-nmap <leader>gc :Git commit<CR>
 
 
 " FZF config
@@ -123,4 +98,3 @@ nmap <leader>gc :Git commit<CR>
 " set guioptions-=T
 " set guioptions-=L
 
-nmap <C-\> :NvimTreeToggle<CR>
