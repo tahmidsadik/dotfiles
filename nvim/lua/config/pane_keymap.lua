@@ -14,7 +14,7 @@ return {
 
 		-- Center current pane
 		vim.keymap.set("n", "<leader>h", "<C-w>H", {})
-		vim.keymap.set("n", "<leader>K", "<C-w>H", {})
+		vim.keymap.set("n", "<leader>k", "<C-w>K", {})
 
 		-- split a vertical pane with leader v
 		vim.keymap.set("n", "<leader>v", "<C-w>v", {})
