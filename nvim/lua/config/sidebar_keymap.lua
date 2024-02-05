@@ -1,5 +1,8 @@
 return {
 	setup = function(opts)
-		vim.keymap.set("n", "<C->", ":NvimTreeToggle<CR>", {})
+		local api = require("nvim-tree.api")
+		vim.keymap.set("n", "<C-\\>", function()
+			api.tree.toggle()
+		end, {})
 	end,
 }

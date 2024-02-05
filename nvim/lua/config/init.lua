@@ -1,3 +1,4 @@
+local trouble_keymap = require("config.trouble_keymap")
 -- leader needs to be set before loading plugins
 vim.g.mapleader = ","
 -- add static node js path so it works well with volta
@@ -30,7 +31,7 @@ require("lazy").setup({
 		priority = 1000, -- make sure to load this before all the other start plugins
 		config = function()
 			-- load the colorscheme here
-			vim.cmd([[colorscheme tokyonight-moon]])
+			vim.cmd([[colorscheme NeoSolarized]])
 		end,
 	},
 	"LazyVim/LazyVim",
@@ -120,7 +121,6 @@ require("lazy").setup({
 
 	{
 		"nvim-treesitter/nvim-treesitter",
-		version = false,
 		build = ":TSUpdate",
 		event = { "BufReadPost", "BufNewFile" },
 		dependencies = {
@@ -218,8 +218,8 @@ require("lazy").setup({
 		"neovim/nvim-lspconfig",
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
-			{ "folke/neoconf.nvim", cmd = "Neoconf", config = false, dependencies = { "nvim-lspconfig" } },
-			{ "folke/neodev.nvim", opts = {} },
+			{ "folke/neoconf.nvim", cmd = "Neoconf" },
+			{ "folke/neodev.nvim" },
 			"mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"hrsh7th/cmp-nvim-lsp",
@@ -418,8 +418,8 @@ require("lazy").setup({
 
 			if Util.lsp.get_config("denols") and Util.lsp.get_config("tsserver") then
 				local is_deno = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc")
-				Util.lsp.lsp_disable("tsserver", is_deno)
-				Util.lsp.lsp_disable("denols", function(root_dir)
+				Util.lsp.disable("tsserver", is_deno)
+				Util.lsp.disable("denols", function(root_dir)
 					return not is_deno(root_dir)
 				end)
 			end
@@ -574,56 +574,13 @@ require("lazy").setup({
 		end,
 	},
 	{ "nvim-tree/nvim-web-devicons", lazy = true },
-	{ "folke/trouble.nvim" },
-	{ "nvim-lua/plenary.nvim" },
 	{
-		"jose-elias-alvarez/null-ls.nvim",
-		cond = false,
-		event = { "BufReadPre", "BufNewFile" },
-		dependencies = { "mason.nvim" },
+		"folke/trouble.nvim",
 		opts = function()
-			local nls = require("null-ls")
-			nls.setup({
-				on_attach = function(client, bufnr)
-					if client.supports_method("textDocument/formatting") then
-						vim.keymap.set("n", "<Leader>f", function()
-							vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-						end, { buffer = bufnr, desc = "[lsp] format" })
-
-						-- format on save
-						vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
-						vim.api.nvim_create_autocmd(event, {
-							buffer = bufnr,
-							group = group,
-							callback = function()
-								vim.lsp.buf.format({ bufnr = bufnr, async = async })
-							end,
-							desc = "[lsp] format on save",
-						})
-					end
-
-					if client.supports_method("textDocument/rangeFormatting") then
-						vim.keymap.set("x", "<Leader>f", function()
-							vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
-						end, { buffer = bufnr, desc = "[lsp] format" })
-					end
-				end,
-			})
-
-			return {
-				root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
-				sources = {
-					nls.builtins.formatting.fish_indent,
-					nls.builtins.formatting.prettier,
-					nls.builtins.diagnostics.fish,
-					nls.builtins.formatting.stylua,
-					nls.builtins.formatting.shfmt,
-					nls.builtins.diagnostics.eslint,
-					-- nls.builtins.diagnostics.flake8,
-				},
-			}
+			require("config.trouble_keymap").setup({})
 		end,
 	},
+	{ "nvim-lua/plenary.nvim" },
 	{
 		"stevearc/conform.nvim",
 		opts = {
@@ -714,7 +671,6 @@ require("lazy").setup({
 	--- mini.nvim
 	{
 		"echasnovski/mini.nvim",
-		version = false,
 		config = function(self, opts)
 			require("mini.comment").setup()
 			require("mini.cursorword").setup()
