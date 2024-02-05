@@ -3,7 +3,7 @@ return {
 		"mfussenegger/nvim-lint",
 		event = { "BufEnter", "BufNewFile" },
 		opts = {
-			events = { "BufEnter", "BufWritePost" },
+			events = { "BufEnter", "BufReadPost", "BufWritePost", "InsertLeave" },
 			linters_by_ft = {
 				fish = { "fish" },
 				javascript = { "eslint_d" },
@@ -14,13 +14,12 @@ return {
 				python = { "pylint" },
 			},
 		},
-		config = function()
+		config = function(_, opts)
 			local lint = require("lint")
+			lint.linters_by_ft = opts.linters_by_ft
 
-			local lint_augroup = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
-
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
-				group = lint_augroup,
+			vim.api.nvim_create_autocmd(opts.events, {
+				group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
 				callback = function()
 					lint.try_lint()
 				end,

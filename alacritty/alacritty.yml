@@ -610,35 +610,36 @@ font:
 # papercolor_light.yaml
 # Colors (PaperColor - Light)
 colors:
-  # COLORSCHEME: solarized_dark.yaml
+  # COLORSCHEME: github_light.yaml
   # Default colors
   primary:
     # hard contrast: background = '0x1d2021'
-    background: '0x002b36'
-    foreground: '0x839496'
+    background: '0xffffff'
+    foreground: '0x24292f'
 
   # Normal colors
   normal:
   # Bright colors
-    black: '0x073642'
-    red: '0xdc322f'
-    green: '0x859900'
-    yellow: '0xb58900'
-    blue: '0x268bd2'
-    magenta: '0xd33682'
-    cyan: '0x2aa198'
-    white: '0xeee8d5'
+    black: '0x24292e'
+    red: '0xd73a49'
+    green: '0x28a745'
+    yellow: '0xdbab09'
+    blue: '0x0366d6'
+    magenta: '0x5a32a3'
+    cyan: '0x0598bc'
+    white: '0x6a737d'
 
   # Bright colors
   bright:
-    black: '0x002b36'
-    red: '0xcb4b16'
-    green: '0x586e75'
-    yellow: '0x657b83'
-    blue: '0x839496'
-    magenta: '0x6c71c4'
-    cyan: '0x93a1a1'
-    white: '0xfdf6e3'
+    black: '0x959da5'
+    red: '0xcb2431'
+    green: '0x22863a'
+    yellow: '0xb08800'
+    blue: '0x005cc5'
+    magenta: '0x5a32a3'
+    cyan: '0x3192aa'
+    white: '0xd1d5da'
+
   cursor:
     text: '0x181818'
     cursor: '0xd8d8d8'
