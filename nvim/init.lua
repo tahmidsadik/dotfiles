@@ -6,6 +6,13 @@ require("config.neovide").setup({})
 require("config.projectrunner").setup({})
 require("config.pane_keymap").setup({})
 
+vim.opt.termguicolors = true
+
+-- vim.opt.wildmenu = true
+-- vim.opt.wildmode = "list:longest"
+-- vim.opt.showmatch = true
+vim.opt.formatoptions = "qrn1"
+
 local home_dir = os.getenv("HOME")
 local node_bin_path = "/.volta/tools/image/node/20.5.1/bin"
 vim.cmd("let $PATH = '" .. home_dir .. node_bin_path .. ":' . $PATH")
@@ -286,24 +293,30 @@ require("lazy").setup({
 						},
 					},
 				},
+				tsserver = {
+					keys = {
+						{ "<leader>oa", "<cmd>TypescriptOrganizeImports<CR>", desc = "Organize Imports" },
+						{ "<leader>cR", "<cmd>TypescriptRenameFile<CR>", desc = "Rename File" },
+					},
+				},
 			},
 			-- you can do any additional lsp server setup here
 			-- return true if you don't want this server to be setup with lspconfig
 			---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-			setup = {
-				-- example to setup with typescript.nvim
-				-- tsserver = function(_, opts)
-				-- 	require("typescript").setup({
-				-- 		server = opts,
-				-- 		on_attach = function(client)
-				-- 			client.resolved_capabilities.document_formatting = false
-				-- 		end,
-				-- 	})
-				-- 	return true
-				-- end,
-				-- Specify * to use this function as a fallback for any server
-				-- ["*"] = function(server, opts) end,
-			},
+			-- setup = {
+			-- example to setup with typescript.nvim
+			-- tsserver = function(_, opts)
+			-- 	require("typescript").setup({
+			-- 		server = opts,
+			-- 		on_attach = function(client)
+			-- 			client.resolved_capabilities.document_formatting = false
+			-- 		end,
+			-- 	})
+			-- 	return true
+			-- end,
+			-- Specify * to use this function as a fallback for any server
+			-- ["*"] = function(server, opts) end,
+			-- },
 		},
 		---@param opts PluginLspOpts
 		config = function(_, opts)
@@ -856,8 +869,6 @@ require("lazy").setup({
 	"aonemd/quietlight.vim",
 })
 
-vim.opt.termguicolors = true
-
 -- basic indent and tab settings
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
@@ -889,6 +900,3 @@ vim.opt.foldenable = true
 --- keybinding for terminal
 vim.keymap.set("n", "<S-h>", ":bprevious<cr>", {})
 vim.keymap.set("n", "<S-l>", ":bnext<cr>", {})
-vim.keymap.set("n", "<leader>oa", function()
-	vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments = { vim.fn.expand("%:p") } })
-end, {})
