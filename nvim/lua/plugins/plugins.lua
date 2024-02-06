@@ -1,10 +1,5 @@
 return {
 	{
-		--- colorscheme
-		{
-			"arcticicestudio/nord-vim",
-			lazy = true, -- make sure we load this during startup if it is your main colorscheme
-		},
 		"LazyVim/LazyVim",
 		{
 			"nvim-lualine/lualine.nvim",
@@ -22,7 +17,15 @@ return {
 			end,
 		},
 
-		"folke/which-key.nvim",
+		{
+			"folke/which-key.nvim",
+			event = "VeryLazy",
+			init = function()
+				vim.o.timeoutlen = 500
+				vim.o.timeout = true
+			end,
+			opts = {},
+		},
 		{ "folke/neoconf.nvim", cmd = "Neoconf" },
 		{ "folke/neodev.nvim" },
 		--- luasnip
@@ -54,6 +57,12 @@ return {
 		--- lsp
 		{
 			"neovim/nvim-lspconfig",
+			init = function()
+				local keys = require("lazyvim.plugins.lsp.keymaps").get()
+				vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, { desc = "Rename refactor a symbol with LSP" })
+				vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, { desc = "Take code actions via lsp" })
+				vim.keymap.set("n", "<leader>oa", "<cmd>TypescriptOrganizeImports<CR>", { desc = "Organize Imports" })
+			end,
 			event = { "BufReadPre", "BufNewFile" },
 			dependencies = {
 				{ "folke/neoconf.nvim", cmd = "Neoconf" },
@@ -124,12 +133,6 @@ return {
 							},
 						},
 					},
-					tsserver = {
-						keys = {
-							{ "<leader>oa", "<cmd>TypescriptOrganizeImports<CR>", desc = "Organize Imports" },
-							{ "<leader>cR", "<cmd>TypescriptRenameFile<CR>", desc = "Rename File" },
-						},
-					},
 				},
 				-- you can do any additional lsp server setup here
 				-- return true if you don't want this server to be setup with lspconfig
@@ -148,6 +151,7 @@ return {
 					-- Specify * to use this function as a fallback for any server
 					-- ["*"] = function(server, opts) end,
 				},
+				keys = {},
 			},
 			---@param opts PluginLspOpts
 			config = function(_, opts)
@@ -518,23 +522,6 @@ return {
 					Util.on_very_lazy(function()
 						vim.notify = require("notify")
 					end)
-				end
-			end,
-		},
-		{
-			"stevearc/dressing.nvim",
-			event = "VeryLazy",
-			lazy = true,
-			init = function()
-				---@diagnostic disable-next-line: duplicate-set-field
-				vim.ui.select = function(...)
-					require("lazy").load({ plugins = { "dressing.nvim" } })
-					return vim.ui.select(...)
-				end
-				---@diagnostic disable-next-line: duplicate-set-field
-				vim.ui.input = function(...)
-					require("lazy").load({ plugins = { "dressing.nvim" } })
-					return vim.ui.input(...)
 				end
 			end,
 		},

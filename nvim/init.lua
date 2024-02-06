@@ -55,7 +55,7 @@ vim.opt.clipboard = "unnamedplus"
 -- title of the file
 vim.opt.title = true
 
-vim.opt.background = "light"
+vim.opt.background = "dark"
 vim.opt.foldenable = true
 
 --- keybinding for terminal
