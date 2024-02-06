@@ -3,12 +3,7 @@ return {
 		--- colorscheme
 		{
 			"arcticicestudio/nord-vim",
-			lazy = false, -- make sure we load this during startup if it is your main colorscheme
-			priority = 1000, -- make sure to load this before all the other start plugins
-			config = function()
-				-- load the colorscheme here
-				vim.cmd([[colorscheme quietlight]])
-			end,
+			lazy = true, -- make sure we load this during startup if it is your main colorscheme
 		},
 		"LazyVim/LazyVim",
 		{
@@ -54,139 +49,6 @@ return {
 			},
 		},
 		"mattn/emmet-vim",
-		{
-			"zbirenbaum/copilot.lua",
-			cmd = "Copilot",
-			event = "InsertEnter",
-			config = function()
-				require("copilot").setup({
-					suggestion = {
-						enabled = true,
-						auto_trigger = false,
-						debounce = 75,
-						keymap = {
-							accept = "<C-j>",
-							accept_word = false,
-							accept_line = false,
-							next = "<M-]>",
-							prev = "<M-[>",
-							dismiss = "<C-]>",
-						},
-					},
-					filetypes = {
-						javascript = true,
-						typescript = true,
-						go = true,
-						rust = true,
-						zig = true,
-						lua = true,
-						["*"] = false,
-					},
-				})
-			end,
-		},
-		{
-			"zbirenbaum/copilot-cmp",
-			dependencies = {
-				"zbirenbaum/copilot.lua",
-			},
-			config = function()
-				require("copilot_cmp").setup()
-			end,
-		},
-
-		{
-			"nvim-treesitter/nvim-treesitter",
-			build = ":TSUpdate",
-			event = { "BufReadPost", "BufNewFile" },
-			dependencies = {
-				{
-					"nvim-treesitter/nvim-treesitter-textobjects",
-					init = function()
-						-- disable rtp plugin, as we only need its queries for mini.ai
-						-- In case other textobject modules are enabled, we will load them
-						-- once nvim-treesitter is loaded
-						require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
-						load_textobjects = true
-					end,
-				},
-			},
-			cmd = { "TSUpdateSync" },
-			opts = {
-				highlight = { enable = true },
-				indent = { enable = true },
-				ensure_installed = {
-					"bash",
-					"c",
-					"cpp",
-					"d",
-					"go",
-					"rust",
-					"javascript",
-					"typescript",
-					"sql",
-					"html",
-					"css",
-					"jsdoc",
-					"json",
-					"lua",
-					"luadoc",
-					"luap",
-					"markdown",
-					"markdown_inline",
-					"python",
-					"query",
-					"regex",
-					"tsx",
-					"vim",
-					"vimdoc",
-					"yaml",
-					"zig",
-				},
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = "<C-space>",
-						node_incremental = "<C-space>",
-						scope_incremental = false,
-						node_decremental = "<bs>",
-					},
-				},
-			},
-			config = function(_, opts)
-				if type(opts.ensure_installed) == "table" then
-					---@type table<string, boolean>
-					local added = {}
-					opts.ensure_installed = vim.tbl_filter(function(lang)
-						if added[lang] then
-							return false
-						end
-						added[lang] = true
-						return true
-					end, opts.ensure_installed)
-				end
-				require("nvim-treesitter.configs").setup(opts)
-
-				if load_textobjects then
-					-- PERF: no need to load the plugin, if we only need its queries for mini.ai
-					if opts.textobjects then
-						for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
-							if opts.textobjects[mod] and opts.textobjects[mod].enable then
-								local Loader = require("lazy.core.loader")
-								Loader.disabled_rtp_plugins["nvim-treesitter-textobjects"] = nil
-								local plugin = require("lazy.core.config").plugins["nvim-treesitter-textobjects"]
-								require("lazy.core.loader").source_runtime(plugin.dir, "plugin")
-								break
-							end
-						end
-					end
-				end
-			end,
-		},
-		{
-			"nvim-treesitter/playground",
-			event = { "BufReadPost", "BufNewFile" },
-		},
 		"cespare/vim-toml",
 		"norcalli/nvim-colorizer.lua",
 		--- lsp
@@ -574,65 +436,6 @@ return {
 		{ "cohama/lexima.vim" },
 		{ "https://github.com/tpope/vim-surround.git" },
 		{ "diepm/vim-rest-console" },
-		{
-			"nvim-telescope/telescope.nvim",
-			keys = {
-        -- add a keymap to browse plugin files
-        -- stylua: ignore
-        {
-          "<leader>fp",
-          function() require("telescope.builtin").find_files({ cwd = "~/.config/nvim" }) end,
-          desc = "Find Plugin File",
-        },
-				{
-					"<C-p>",
-					function()
-						require("telescope.builtin").find_files()
-					end,
-					desc = "Find files",
-				},
-				{
-					"<leader>ff",
-					function()
-						require("telescope.builtin").find_files()
-					end,
-					desc = "Find files",
-				},
-				{
-					"<C-f>",
-					"<cmd>Telescope live_grep<CR>",
-					desc = "Search text",
-				},
-				{
-					"<leader>fb",
-					function()
-						require("telescope.builtin").buffers()
-					end,
-					desc = "Find buffers",
-				},
-			},
-			-- change some options
-			opts = {
-				defaults = {
-					layout_strategy = "horizontal",
-					layout_config = { prompt_position = "top" },
-					sorting_strategy = "ascending",
-					winblend = 0,
-				},
-			},
-		},
-
-		-- add telescope-fzf-native
-		{
-			"telescope.nvim",
-			dependencies = {
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
-				config = function()
-					require("telescope").load_extension("fzf")
-				end,
-			},
-		},
 
 		--- mini.nvim
 		{
@@ -646,24 +449,6 @@ return {
 			end,
 		},
 
-		--- terminal
-		{
-			"akinsho/toggleterm.nvim",
-			version = "*",
-			config = function()
-				require("toggleterm").setup({
-					open_mapping = [[<c-t>]],
-					direction = "vertical",
-					size = function(term)
-						if term.direction == "horizontal" then
-							return 15
-						elseif term.direction == "vertical" then
-							return vim.o.columns * 0.45
-						end
-					end,
-				})
-			end,
-		},
 		{
 			"https://tpope.io/vim/fugitive.git",
 			config = function()
@@ -791,34 +576,8 @@ return {
 			"mg979/vim-visual-multi",
 			event = "InsertEnter",
 		},
-
-		"matthewtodd/vim-twilight",
-		"jnurmine/Zenburn",
-		"vim-scripts/xoria256.vim",
-		"nanotech/jellybeans.vim",
-		"morhetz/gruvbox",
-		"zeis/vim-kolor",
-		"tomasr/molokai",
-		"altercation/vim-colors-solarized",
-		"nathanaelkane/vim-indent-guides",
-		"ayu-theme/ayu-vim",
-		"fneu/breezy",
-		"dim13/smyck.vim",
-		"joshdick/onedark.vim",
-		"folke/tokyonight.nvim",
-		"haishanh/night-owl.vim",
-		"NLKNguyen/papercolor-theme",
-		"skbolton/embark",
-		"iCyMind/NeoSolarized",
-		{ "arcticicestudio/nord-vim", branch = "main" },
-		"franbach/miramare",
-		"srcery-colors/srcery-vim",
-		"vimoxide/vim-cinnabar",
-		"fenetikm/falcon",
-		"sainnhe/forest-night",
-		"sainnhe/gruvbox-material",
-		"sainnhe/edge",
-		"sainnhe/sonokai",
-		"aonemd/quietlight.vim",
+		{
+			"nathanaelkane/vim-indent-guides",
+		},
 	},
 }
