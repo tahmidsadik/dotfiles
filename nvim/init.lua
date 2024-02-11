@@ -3,6 +3,7 @@ vim.g.mapleader = ","
 require("config.neovide").setup({})
 require("config.projectrunner").setup({})
 require("config.pane_keymap").setup({})
+require("config.buffer_keymap").setup()
 
 vim.opt.termguicolors = true
 
@@ -57,7 +58,3 @@ vim.opt.title = true
 
 vim.opt.background = "dark"
 vim.opt.foldenable = true
-
---- keybinding for terminal
-vim.keymap.set("n", "<S-h>", ":bprevious<cr>", {})
-vim.keymap.set("n", "<S-l>", ":bnext<cr>", {})
