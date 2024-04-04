@@ -12,7 +12,9 @@ return {
 			{
 				"<C-p>",
 				function()
-					require("telescope.builtin").find_files()
+					require("telescope.builtin").git_files({
+						hidden = true,
+					})
 				end,
 				desc = "Find files",
 			},

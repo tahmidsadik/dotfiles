@@ -15,7 +15,7 @@
 env:
   TERM: xterm-256color
 
-# window:
+window:
   # Window dimensions (changes require restart)
   #
   # Specified in number of columns/lines, not pixels.
@@ -36,9 +36,9 @@ env:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  # padding:
-  #   x: 20
-  #   y: 20
+  padding:
+    x: 10
+    y: 10
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -610,35 +610,35 @@ font:
 # papercolor_light.yaml
 # Colors (PaperColor - Light)
 colors:
-  # COLORSCHEME: github_light.yaml
+  # COLORSCHEME: github_dark.yaml
   # Default colors
   primary:
     # hard contrast: background = '0x1d2021'
-    background: '0xffffff'
-    foreground: '0x24292f'
+    background: '0x24292e'
+    foreground: '0xd1d5da'
 
   # Normal colors
   normal:
   # Bright colors
-    black: '0x24292e'
-    red: '0xd73a49'
-    green: '0x28a745'
-    yellow: '0xdbab09'
-    blue: '0x0366d6'
-    magenta: '0x5a32a3'
-    cyan: '0x0598bc'
-    white: '0x6a737d'
+    black: '0x586069'
+    red: '0xea4a5a'
+    green: '0x34d058'
+    yellow: '0xffea7f'
+    blue: '0x2188ff'
+    magenta: '0xb392f0'
+    cyan: '0x39c5cf'
+    white: '0xd1d5da'
 
   # Bright colors
   bright:
     black: '0x959da5'
-    red: '0xcb2431'
-    green: '0x22863a'
-    yellow: '0xb08800'
-    blue: '0x005cc5'
-    magenta: '0x5a32a3'
-    cyan: '0x3192aa'
-    white: '0xd1d5da'
+    red: '0xf97583'
+    green: '0x85e89d'
+    yellow: '0xffea7f'
+    blue: '0x79b8ff'
+    magenta: '0xb392f0'
+    cyan: '0x56d4dd'
+    white: '0xfafbfc'
 
   cursor:
     text: '0x181818'
@@ -656,7 +656,7 @@ colors:
     white: '0x828282'
   indexed_colors:
     - {index: 16, color: '0xd18616'}
-    - {index: 17, color: '0xcb2431'}
+    - {index: 17, color: '0xf97583'}
   selection:
     text: '#ffe9d7'
     background: '#265b75'

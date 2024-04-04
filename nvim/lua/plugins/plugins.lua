@@ -59,9 +59,13 @@ return {
 			"neovim/nvim-lspconfig",
 			init = function()
 				local keys = require("lazyvim.plugins.lsp.keymaps").get()
-				vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, { desc = "Rename refactor a symbol with LSP" })
-				vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, { desc = "Take code actions via lsp" })
-				vim.keymap.set("n", "<leader>oa", "<cmd>TypescriptOrganizeImports<CR>", { desc = "Organize Imports" })
+				-- keys[#keys + 1] = { "<Space>rn", vim.lsp.buf.rename, { desc = "Rename refactor a symbol with LSP" } }
+				-- keys[#keys + 1] = { "<Space>ca", vim.lsp.buf.code_action, { desc = "Take code actions via lsp" } }
+				-- keys[#keys + 1] = { "<leader>oa", "<cmd>TypescriptOrganizeImports<CR>", { desc = "Organize Imports" } }
+
+				-- vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, { desc = "Rename refactor a symbol with LSP" })
+				-- vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, { desc = "Take code actions via lsp" })
+				-- vim.kenmap.set("n", "<leader>oa", "<cmd>TypescriptOrganizeImports<CR>", { desc = "Organize Imports" })
 			end,
 			event = { "BufReadPre", "BufNewFile" },
 			dependencies = {
