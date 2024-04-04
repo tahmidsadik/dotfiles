@@ -59,5 +59,5 @@ vim.opt.background = "dark"
 vim.opt.foldenable = true
 
 --- keybinding for terminal
-vim.keymap.set("n", "<S-h>", ":bprevious<cr>", {})
-vim.keymap.set("n", "<S-l>", ":bnext<cr>", {})
+vim.keymap.set("n", "<S-h>", "<cmd>bprevious<cr>", {})
+vim.keymap.set("n", "<S-l>", "<cmd>bnext<cr>", {})

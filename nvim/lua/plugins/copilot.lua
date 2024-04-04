@@ -2,6 +2,7 @@ return {
 	--- copilot
 	{
 		"zbirenbaum/copilot.lua",
+		cond = false,
 		cmd = "Copilot",
 		event = "InsertEnter",
 		config = function()
