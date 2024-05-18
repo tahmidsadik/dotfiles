@@ -1,11 +1,10 @@
-vim.g.mapleader = ","
 local home_dir = os.getenv("HOME")
 local node_bin_path = "/.volta/tools/image/node/20.5.1/bin"
 -- add static node js path so it works well with volta
 vim.cmd("let $PATH = '" .. home_dir .. node_bin_path .. ":' . $PATH")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
