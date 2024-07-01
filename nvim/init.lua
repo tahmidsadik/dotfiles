@@ -88,5 +88,8 @@ vim.opt.clipboard = "unnamedplus"
 -- title of the file
 vim.opt.title = true
 
-vim.opt.background = "dark"
 vim.opt.foldenable = true
+
+if vim.g.neovide then
+	vim.opt.guifont = "Iosevka Term:h16"
+end

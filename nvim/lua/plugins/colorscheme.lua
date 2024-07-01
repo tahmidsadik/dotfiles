@@ -5,6 +5,7 @@ return {
 		priority = 1000,
 		name = "catppuccin",
 		opts = {
+			flavour = "mocha",
 			integrations = {
 				aerial = true,
 				alpha = true,
@@ -42,7 +43,9 @@ return {
 			},
 		},
 		config = function()
-			vim.cmd([[colorscheme gruvbox]])
+			-- vim.cmd([[colorscheme NeoSolarized]])
+			-- vim.cmd([[colorscheme catppuccin]])
+			vim.cmd([[colorscheme github_dark_default]])
 		end,
 	},
 	{
