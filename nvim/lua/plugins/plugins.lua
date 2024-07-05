@@ -6,7 +6,10 @@ return {
 			event = "VeryLazy",
 			opts = require("config.statusline").setup,
 		},
-
+		{
+			"xiyaowong/transparent.nvim",
+			lazy = false,
+		},
 		{
 			"dstein64/vim-startuptime",
 			-- lazy-load on a command

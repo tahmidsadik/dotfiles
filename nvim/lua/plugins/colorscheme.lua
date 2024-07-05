@@ -6,6 +6,11 @@ return {
 		name = "catppuccin",
 		opts = {
 			flavour = "mocha",
+			transparent = "true",
+			styles = {
+				sidebars = "transparent",
+				floats = "transparent",
+			},
 			integrations = {
 				aerial = true,
 				alpha = true,
@@ -44,8 +49,8 @@ return {
 		},
 		config = function()
 			-- vim.cmd([[colorscheme NeoSolarized]])
-			-- vim.cmd([[colorscheme catppuccin]])
-			vim.cmd([[colorscheme github_dark_default]])
+			vim.cmd([[colorscheme catppuccin]])
+			-- vim.cmd([[colorscheme github_dark_default]])
 		end,
 	},
 	{

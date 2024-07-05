@@ -10,6 +10,9 @@ return {
 				filters = {
 					git_ignored = false,
 				},
+				view = {
+					side = "right",
+				},
 			})
 			require("config.sidebar_keymap").setup({})
 		end,
