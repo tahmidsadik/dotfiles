@@ -15,6 +15,9 @@ local run_project = function()
 	elseif vim.bo.filetype == "sh" then
 		print("running bash script")
 		term_cmd = "bash %"
+	elseif vim.bo.filetype == "c" then
+		print("Running C project")
+		term_cmd = "make run"
 	end
 	if term_cmd ~= "" then
 		print("Executing command")

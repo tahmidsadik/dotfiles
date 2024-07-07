@@ -1,3 +1,14 @@
+local function trim(s)
+	return s:match("^%s*(.*%S)") or ""
+end
+
+local function is_in_git_dir()
+	local handle = io.popen("git rev-parse --is-inside-work-tree")
+	local result = trim(handle:read("*a"))
+	handle:close()
+	return result == "true"
+end
+
 return {
 	{
 		"nvim-telescope/telescope.nvim",
@@ -12,9 +23,12 @@ return {
 			{
 				"<C-p>",
 				function()
-					require("telescope.builtin").git_files({
-						hidden = true,
-					})
+					if is_in_git_dir() then
+						require("telescope.builtin").git_files({})
+						return
+					end
+
+					require("telescope.builtin").find_files()
 				end,
 				desc = "Find files",
 			},
