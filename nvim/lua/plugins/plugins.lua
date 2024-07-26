@@ -204,6 +204,9 @@ return {
 					"bash-language-server",
 					--- zig
 					"zls",
+					-- protobuf
+					"pbls",
+					"buf-language-server",
 				},
 			},
 

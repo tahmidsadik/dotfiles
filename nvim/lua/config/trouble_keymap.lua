@@ -1,7 +1,7 @@
 return {
 	setup = function()
 		vim.keymap.set("n", "<leader>xx", function()
-			require("trouble").toggle()
+			require("trouble").toggle("diagnostics")
 		end)
 		vim.keymap.set("n", "<leader>xw", function()
 			require("trouble").toggle("workspace_diagnostics")
