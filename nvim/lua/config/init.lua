@@ -1,5 +1,10 @@
 -- leader needs to be set before loading plugins
 vim.g.mapleader = ","
+
+-- Disable netrw early (before plugins load) so nvim-tree takes over
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- add static node js path so it works well with volta
 require("config.neovide").setup({})
 require("config.projectrunner").setup({})
@@ -60,7 +65,7 @@ vim.opt.ruler = true
 vim.opt.wrap = true
 
 -- Add left margin to the editor
-vim.opt.foldcolumn = "2"     -- Adds 2 columns of margin on the left
+vim.opt.foldcolumn = "0"     -- Adds 2 columns of margin on the left
 vim.opt.signcolumn = "yes" -- Always show sign column for consistent spacing
 vim.opt.textwidth = 120
 -- vim.opt.relativenumber = true
