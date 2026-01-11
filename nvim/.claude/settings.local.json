@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gopls version:*)",
+      "Bash(go install:*)",
+      "Bash(go env:*)",
+      "Bash(/Users/noshinshama/go/bin/gopls version:*)"
+    ]
+  }
+}

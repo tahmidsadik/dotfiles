@@ -1,7 +1,7 @@
 lua << EOF
 
 require('config')
--- require('lsp')
+require('lsp')
 -- require('root')
 
 EOF

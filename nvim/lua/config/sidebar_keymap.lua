@@ -1,5 +1,5 @@
 return {
 	setup = function(opts)
-		vim.keymap.set("n", "<C->", ":NvimTreeToggle<CR>", {})
+		vim.keymap.set("n", "<C-\\>", ":NvimTreeToggle<CR>", {})
 	end,
 }
